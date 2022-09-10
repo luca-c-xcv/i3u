@@ -1,0 +1,28 @@
+[global_config]
+  window_state = maximise
+[keybindings]
+[profiles]
+  [[default]]
+    icon_bell = False
+    background_color = "#282b35"
+    background_darkness = 0.94
+    background_type = transparent
+    cursor_shape = underline
+    cursor_color = "#aaaaaa"
+    font = JetBrains Mono 10
+    foreground_color = "#ffffff"
+    show_titlebar = False
+    scrollback_infinite = True
+    palette = "#000000:#cc0000:#4e9a06:#c4a000:#3465a4:#75507b:#06989a:#d3d7cf:#555753:#ef2929:#8ae234:#fce94f:#729fcf:#ad7fa8:#34e2e2:#eeeeec"
+    use_system_font = False
+[layouts]
+  [[default]]
+    [[[window0]]]
+      type = Window
+      parent = ""
+      size = 1050, 650
+    [[[child1]]]
+      type = Terminal
+      parent = window0
+      profile = default
+[plugins]

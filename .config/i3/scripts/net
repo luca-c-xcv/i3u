@@ -1,0 +1,25 @@
+#!/bin/bash
+
+eth=$(nmcli d | grep connected | grep -E 'ethernet' | awk '{print $4}')
+wifi=$(nmcli d | grep connected | grep -E 'wifi' | awk '{print $4}')
+ethD=$(nmcli d | grep connected | grep -E 'ethernet' | awk '{print $3}')
+wifiD=$(nmcli d | grep connected | grep -E 'wifi' | sed '2d' | awk '{print $3}')
+
+if [ ! -z "$eth" ] && [ "$ethD" != "disconnected" ]; then
+	if [ ! -z "$wifi" ] && [ "$wifiD" != "disconnected" ]; then
+		echo " | "
+	else
+		echo ""
+	fi
+elif [ ! -z "$wifi" ] && [ "$wifiD" != "disconnected" ]; then
+	echo ""
+else
+	echo ""
+fi
+	
+
+
+case $BLOCK_BUTTON in
+  1) gnome-control-center network & ;; # left click
+  3) nm-connection-editor & ;; #right click
+esac

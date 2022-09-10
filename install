@@ -1,0 +1,148 @@
+#!/bin/bash
+
+USER=$1
+
+# add required repos
+function add_repos( )
+	{
+		add-apt-repository -y ppa:regolith-linux/release
+		rm /etc/apt/sources.list.d/regolith*
+		add-apt-repository -y -S \
+															'deb https://ppa.launchpadcontent.net/regolith-linux/release/ubuntu/ impish main' `# regolith repo`
+
+		add-apt-repository -y ppa:papirus/papirus
+	}
+
+# install zsh
+function install_ZSH()
+	{
+		apt install -y zsh
+		chsh -s /bin/zsh $USER
+		wget -O /tmp/zsh_install.sh https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh
+		chmod +x /tmp/zsh_install.sh
+		su -c "/tmp/zsh_install.sh --unattended" - $USER
+		rm /tmp/zsh_install.sh
+	}
+
+# install required packages
+function install_pack( )
+	{
+		# install essentials
+		apt install -y make git jq curl wget ffmpeg terminator pavucontrol mlocate
+
+		# install i3 & plugins
+		apt install -y i3blocks dunst suckless-tools rofi i3-gaps i3lock i3lock-fancy picom
+
+		# install features
+		apt install -y feh fortune fonts-font-awesome fonts-jetbrains-mono papirus-folders papirus-icon-theme oxygen-cursor-theme oxygen-cursor-theme-extra nemo neofetch cowsay bluez bluez-tools blueman yad playerctl pulseaudio-utils xautolock redshift
+	}
+
+# install theme
+function theme()
+	{
+		rsync -av --progress theme/* /usr/share/themes/
+	}
+
+# setup icons
+function icon()
+	{
+		papirus-folders -C bluegrey --theme Papirus-Dark
+	}
+	
+# setup cursor
+function cursor()
+	{
+		update-alternatives --set x-cursor-theme /etc/X11/cursors/oxy-terra.theme
+	}
+
+
+
+# copy configuration files and them correleted
+function copy_conf()
+	{
+		rsync -av --progress --chown=$USER:$USER .config/* /home/$USER/.config/
+		rsync -av --progress --chown=$USER:$USER .zshrc .aliases /home/$USER/
+		rsync -av --progress --chown=$USER:$USER zsh_themes/* /home/$USER/.oh-my-zsh/custom/themes
+	}
+
+# install extras
+function extras()
+	{
+		# install micro editor
+		curl https://getmic.ro | bash
+		mv micro /usr/bin/
+
+		# copy layouts handlers
+		cp ./openlayout ./savelayout /usr/bin/
+		chown luca:luca /usr/bin/openlayout
+		chown luca:luca /usr/bin/savelayout
+
+		# copy wallpaper changer
+		mkdir -p /home/$USER/.local/bin
+		cp ./feh_cw /home/$USER/.local/bin
+		chown $USER:$USER /home/$USER/.local/bin/feh_cw
+		chmod 764 /home/$USER/.local/bin/feh_cw
+	}
+
+function help()
+	{
+		echo "The script has to run as below:"
+		echo -e "\t sudo /path/to/install <user>"
+		echo "<user> must be replaced with the username who want install the environment"
+	}
+
+function finish()
+	{
+		clear
+		echo -e "
+                                                                                
+            dddddddd                                                            
+            d::::::d                                                        !!! 
+            d::::::d                                                       !!:!!
+            d::::::d                                                       !:::!
+            d:::::d                                                        !:::!
+    ddddddddd:::::d    ooooooooooo   nnnn  nnnnnnnn        eeeeeeeeeeee    !:::!
+  dd::::::::::::::d  oo:::::::::::oo n:::nn::::::::nn    ee::::::::::::ee  !:::!
+ d::::::::::::::::d o:::::::::::::::on::::::::::::::nn  e::::::eeeee:::::ee!:::!
+d:::::::ddddd:::::d o:::::ooooo:::::onn:::::::::::::::ne::::::e     e:::::e!:::!
+d::::::d    d:::::d o::::o     o::::o  n:::::nnnn:::::ne:::::::eeeee::::::e!:::!
+d:::::d     d:::::d o::::o     o::::o  n::::n    n::::ne:::::::::::::::::e !:::!
+d:::::d     d:::::d o::::o     o::::o  n::::n    n::::ne::::::eeeeeeeeeee  !!:!!
+d:::::d     d:::::d o::::o     o::::o  n::::n    n::::ne:::::::e            !!! 
+d::::::ddddd::::::ddo:::::ooooo:::::o  n::::n    n::::ne::::::::e               
+ d:::::::::::::::::do:::::::::::::::o  n::::n    n::::n e::::::::eeeeeeee   !!! 
+  d:::::::::ddd::::d oo:::::::::::oo   n::::n    n::::n  ee:::::::::::::e  !!:!!
+   ddddddddd   ddddd   ooooooooooo     nnnnnn    nnnnnn    eeeeeeeeeeeeee   !!! 
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+"
+	}
+
+if [[ "$EUID" = 0 ]]; then
+	if [[ $1 == "-h" ]]; then
+		help
+		exit 0
+	else
+		apt update
+		add_repos
+		apt update
+		install_pack
+		install_ZSH
+		copy_conf
+		theme
+		icon
+		cursor
+		extras
+		finish
+	fi
+else
+	echo -e "You must run the script with root privileges"
+	echo -e "Lauch the script with -h option for help"
+fi
+
+

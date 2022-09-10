@@ -1,0 +1,2 @@
+alias tabmirror="scrcpy --window-borderless -n"
+alias open="xdg-open"

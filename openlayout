@@ -1,0 +1,15 @@
+#!/bin/bash
+
+WS=$1
+TYPE=$2
+
+if [[ $# -lt 1 || $# -ge 3 ]]; then
+	echo -e "Illegal arguments"
+	echo -e "Run $0 -h to print help"
+elif [[ $# -eq 1 && $1 == '-h' ]]; then
+	echo -e "To open a specific layout run\n\n   $0 <workspace> <layout>\n"
+	echo -e "<workspace> is the number where to open the layout"
+	echo -e "<layout> is the name of the json file where the layout rules were saved"
+else
+	i3-msg "workspace $WS; append_layout ~/.config/i3/layouts/$TYPE.json"
+fi

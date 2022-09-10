@@ -1,0 +1,30 @@
+#!/bin/bash
+
+status=$(bluetooth | sed 's/ //g' | cut -d"=" -f2)
+conn=$(bluetoothctl paired-devices | cut -f2 -d' '|
+while read -r uuid
+do
+    info=`bluetoothctl info $uuid`
+    if echo "$info" | grep -q "Connected: yes"; then
+       echo "$info" | grep "Name"
+    fi
+done)
+
+
+if [[ $status == "on" ]]; then
+    st="off"
+    if [[ ! -z $conn ]]; then
+        echo "~"
+    else
+        echo ""
+    fi
+else
+    st="on"
+    echo ""
+fi
+
+
+case $BLOCK_BUTTON in
+  1) blueman-manager ;; #left click, open blueman settings
+  2) bluetooth $st ;;
+esac
