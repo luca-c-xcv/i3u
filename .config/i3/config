@@ -374,6 +374,9 @@ bindsym --release Shift+Print exec gnome-screenshot -a
 ## window screenshot
 bindsym --release Ctrl+Print exec gnome-screenshot -w
 
+## History Keyboad
+bindsym $super+Shift+v exec /usr/bin/diodon
+
 ## volume keybinding
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle # mute
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +2% # raising
@@ -383,8 +386,11 @@ bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT
 ## media controller keybinding
 bindsym XF86AudioPlay exec --no-startup-id playerctl play-pause # toggle play-pause
 bindsym XF86AudioPause exec --no-startup-id playerctl play-pause # toggle play-pause
-bindsym XF86AudioNext exec --no-startup-id playerctl next # forward
-bindsym XF86AudioPrev exec --no-startup-id playerctl previous # backward
+bindsym XF86AudioNext exec --no-startup-id playerctl next # forward song
+bindsym XF86AudioPrev exec --no-startup-id playerctl previous # backward song
+# bindsym XF86MonBrightnessDown  # brighness down
+# bindsym XF86MonBrightnessUp  # brightness up
+
 
 ###############################################################################
 # Workspace Management
@@ -397,6 +403,10 @@ bindsym $super+i bar mode toggle
 # Cause Settings app to float above tiled windows
 floating_maximum_size -1 x -1
 for_window [class="floating_window"] floating enable
+
+for_window [class="Blueman-manager"] floating enable
+for_window [class="Gnome-control-center"] floating enable
+for_window [class="Gnome-calculator"] floating enable
 
 workspace_auto_back_and_forth yes
 
@@ -455,7 +465,7 @@ default_floating_border pixel 1
 
 # Specify the distance between windows in pixels. (i3-gaps)
 gaps inner 10
-gaps outer 5
+gaps outer 12
 
 # Only enable gaps on a workspace when there is at least one container
 #smart_gaps on
@@ -482,8 +492,8 @@ set $darkgrey				#383c4a
 set $mediumdarkgrey #4e5467
 set $grey						#b0b5bd
 set $mediumgrey			#8b8b8b
-set $yellow         #f7d26b
-set $yellowbrown		#e1b700
+set $yellow         #fff768
+set $yellowbrown		#f7d26b
 
 # Sets i3 font for dialogs
 font pango: Noto Sans Regular 8
@@ -502,7 +512,7 @@ client.urgent						$urgentred		$darkgrey					$urgentred			$urgentred		$urgentred
 
 bar 
 {
-		font pango: Noto Sans Regular 9
+		font pango: Montserrat Regular 8
 		status_command i3blocks -c ~/.config/i3/i3blocks.conf
 		position top
 		mode dock
@@ -531,7 +541,7 @@ bar
 # External programs launched with i3
 ###############################################################################
 
-# Start Rofication for notifications
+# Start dunst for notifications
 exec --no-startup-id dunst --config ~/.config/dunst/dunstrc
 
 # Hide the mouse pointer if unused for a duration
@@ -540,14 +550,12 @@ exec --no-startup-id /usr/bin/unclutter -b
 # Load nm-applet to provide auth dialogs for network access
 exec --no-startup-id /usr/bin/nm-applet
 
-# execute wallpaper changer
-# exec --no-startup-id ~/.local/bin/feh_cw
 
 # load blueman-applet to handle and see the bluetooth status
 exec --no-startup-id /usr/bin/blueman-applet
 
 # load redshift
-exec --no-startup-id /usr/bin/redshift -b0.8
+exec --no-startup-id /usr/bin/redshift
 
 # load picom
 exec --no-startup-id /usr/bin/picom --config ~/.config/picom/config

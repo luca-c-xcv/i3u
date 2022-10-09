@@ -1,0 +1,7 @@
+#!/bin/bash
+
+~/.local/bin/feh_cw &
+
+/usr/bin/diodon &
+
+$HOME/Applications/NextCloud-3.5.4.AppImage --background &
