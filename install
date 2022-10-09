@@ -1,8 +1,11 @@
 #!/bin/bash
 
+### :: VARIABLES :: ###
 USER=$1
 
-# add required repos
+### :: FUNCTIONS :: ###
+
+## add required repos
 function add_repos( )
 	{
 		add-apt-repository -y ppa:regolith-linux/release
@@ -13,7 +16,8 @@ function add_repos( )
 		add-apt-repository -y ppa:papirus/papirus
 	}
 
-# install zsh
+
+## install zsh
 function install_ZSH()
 	{
 		apt install -y zsh
@@ -24,40 +28,52 @@ function install_ZSH()
 		rm /tmp/zsh_install.sh
 	}
 
-# install required packages
+
+## install required packages
 function install_pack( )
 	{
-		# install essentials
+		#install essentials
 		apt install -y make git jq curl wget ffmpeg terminator pavucontrol mlocate
 
-		# install i3 & plugins
+		#install i3 & plugins
 		apt install -y i3blocks dunst suckless-tools rofi i3-gaps i3lock i3lock-fancy picom
 
-		# install features
+		#install features
 		apt install -y feh fortune fonts-font-awesome fonts-jetbrains-mono papirus-folders papirus-icon-theme oxygen-cursor-theme oxygen-cursor-theme-extra nemo neofetch cowsay bluez bluez-tools blueman yad playerctl pulseaudio-utils xautolock redshift
 	}
 
-# install theme
+
+## copy themes
 function theme()
 	{
 		rsync -av --progress theme/* /usr/share/themes/
 	}
 
-# setup icons
+
+## setup icons
 function icon()
 	{
-		papirus-folders -C bluegrey --theme Papirus-Dark
+		papirus-folders -C adwaita --theme Papirus-Dark
 	}
+
 	
-# setup cursor
+## setup cursor
 function cursor()
 	{
 		update-alternatives --set x-cursor-theme /etc/X11/cursors/oxy-terra.theme
 	}
 
 
+## copy fonts
+function fonts()
+	{
+		mkdir -p /home/$USER/.local/share/fonts/customFonts
+		rsync -av --progress --chown=$USER:$USER ./fonts/Montserrat /home/$USER/.local/share/fonts/customFonts/
+		fc-cache -f -v
+	}
 
-# copy configuration files and them correleted
+
+## copy configuration files and them correleted settings
 function copy_conf()
 	{
 		rsync -av --progress --chown=$USER:$USER .config/* /home/$USER/.config/
@@ -65,25 +81,41 @@ function copy_conf()
 		rsync -av --progress --chown=$USER:$USER zsh_themes/* /home/$USER/.oh-my-zsh/custom/themes
 	}
 
-# install extras
+
+## install extra tools
 function extras()
 	{
+		#creation dir for locally bin files 
+		mkdir -p /home/$USER/.local/bin
+		LOCALBIN_PATH=/home/$USER/.local/bin
+ 
 		# install micro editor
 		curl https://getmic.ro | bash
 		mv micro /usr/bin/
 
 		# copy layouts handlers
-		cp ./openlayout ./savelayout /usr/bin/
-		chown luca:luca /usr/bin/openlayout
-		chown luca:luca /usr/bin/savelayout
+		cp ./extras/openlayout ./savelayout $LOCALBIN_PATH
+		chown $USER:$USER $LOCALBIN_PATH/openlayout
+		chown $USER:$USER $LOCALBIN_PATH/savelayout
+		chmod 764 $LOCALBIN_PATH/openlayout
+		chmod 764 $LOCALBIN_PATH/savelayout
 
 		# copy wallpaper changer
-		mkdir -p /home/$USER/.local/bin
-		cp ./feh_cw /home/$USER/.local/bin
-		chown $USER:$USER /home/$USER/.local/bin/feh_cw
-		chmod 764 /home/$USER/.local/bin/feh_cw
+		cp ./extras/feh_cw $LOCALBIN_PATH
+		chown $USER:$USER $LOCALBIN_PATH/feh_cw
+		chmod 764 $LOCALBIN_PATH/feh_cw
+	
+		# copy redlight script
+		cp ./extras/redlight $LOCALBIN_PATH
+		chown $USER:$USER $LOCALBIN_PATH/redlight
+		chmod 764 $LOCALBIN_PATH/redlight				
+	
+		# copy hide cursor
+		cp ./extras/unclutter /usr/bin/unclutter
 	}
 
+
+## help message
 function help()
 	{
 		echo "The script has to run as below:"
@@ -91,6 +123,8 @@ function help()
 		echo "<user> must be replaced with the username who want install the environment"
 	}
 
+
+## done message
 function finish()
 	{
 		clear
@@ -122,6 +156,9 @@ d::::::ddddd::::::ddo:::::ooooo:::::o  n::::n    n::::ne::::::::e
                                                                                 
 "
 	}
+
+
+### :: MAIN :: ##
 
 if [[ "$EUID" = 0 ]]; then
 	if [[ $1 == "-h" ]]; then
