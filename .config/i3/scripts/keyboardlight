@@ -1,0 +1,11 @@
+#!/bin/bash
+
+bright=$(cat /sys/class/leds/tpacpi::kbd_backlight/brightness)
+
+if [[ $bright -eq 0 ]]; then
+  echo "<span color='#ffffff'>! ⌨</span>"
+elif [[ $bright -eq 1 ]]; then
+  echo "<span color='#7891ff'>⌨</span>"
+elif [[ $bright -eq 2 ]]; then
+  echo "<span color='#ffffff'>⌨</span>"
+fi

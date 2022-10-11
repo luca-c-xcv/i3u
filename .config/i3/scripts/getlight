@@ -1,0 +1,6 @@
+#!/bin/bash
+
+num=$(xbacklight -get)
+int=${num%.*}
+
+echo "💡 $int"
