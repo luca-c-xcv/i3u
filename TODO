@@ -2,14 +2,18 @@
 
 ## i3
 
-- add media shortcut in conf
+- [x] add media shortcut in conf
 
 ### rofi / theme
-
-- search file: `find`
-- select look
+- 
+[-] search file: `find`
+- [-] select look
 
 
 ## GTK
 
-- add rules to gtk3 settings
+- [x] add rules to gtk3 settings
+
+## configs
+
+- [] redshift 

@@ -4,8 +4,7 @@
 yad --title="Exit" --center --width=200 --height=100\
     --window-icon=""\
     --text="\n<b><big>Do you really want to quit i3wm?</big></b>" --text-align=center\
-    --button="<b>Yes</b>:1" --button="<u>Cancel</u>:0" 
-		--buttons-layout=center
+    --button="<b>Yes</b>:1" --button="<u>Cancel</u>:0" --buttons-layout=center
 
     
 

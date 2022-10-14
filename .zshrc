@@ -102,5 +102,5 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 source $HOME/.aliases
 
-neofetch
-fortune -n 100 -u it | cowsay
+ufetch
+# fortune -n 100 -u it | cowsay

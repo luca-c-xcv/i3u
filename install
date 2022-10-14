@@ -8,12 +8,11 @@ USER=$1
 ## add required repos
 function add_repos( )
 	{
-		add-apt-repository -y ppa:regolith-linux/release
+		add-apt-repository -y ppa:regolith-linux/unstable
 		rm /etc/apt/sources.list.d/regolith*
-		add-apt-repository -y -S \
-															'deb https://ppa.launchpadcontent.net/regolith-linux/release/ubuntu/ impish main' `# regolith repo`
-
+		add-apt-repository -y "deb https://ppa.launchpadcontent.net/regolith-linux/release/ubuntu/ impish main"
 		add-apt-repository -y ppa:papirus/papirus
+    add-apt-repository -y ppa:diodon-team/stable
 	}
 
 
@@ -30,16 +29,16 @@ function install_ZSH()
 
 
 ## install required packages
-function install_pack( )
+function install_packs( )
 	{
 		#install essentials
 		apt install -y make git jq curl wget ffmpeg terminator pavucontrol mlocate
 
 		#install i3 & plugins
-		apt install -y i3blocks dunst suckless-tools rofi i3-gaps i3lock i3lock-fancy picom
+		apt install -y i3-gaps i3blocks i3lock i3lock-fancy dunst suckless-tools rofi 
 
 		#install features
-		apt install -y feh fortune fonts-font-awesome fonts-jetbrains-mono papirus-folders papirus-icon-theme oxygen-cursor-theme oxygen-cursor-theme-extra nemo neofetch cowsay bluez bluez-tools blueman yad playerctl pulseaudio-utils xautolock redshift
+		apt install -y feh fortune fonts-font-awesome fonts-jetbrains-mono papirus-folders papirus-icon-theme oxygen-cursor-theme oxygen-cursor-theme-extra nemo cowsay bluez bluez-tools blueman yad playerctl pulseaudio-utils xautolock redshift diodon
 	}
 
 
@@ -88,30 +87,34 @@ function extras()
 		#creation dir for locally bin files 
 		mkdir -p /home/$USER/.local/bin
 		LOCALBIN_PATH=/home/$USER/.local/bin
+    GLOBBIN_PATH=/usr/bin
  
-		# install micro editor
+		# install micro editore
 		curl https://getmic.ro | bash
 		mv micro /usr/bin/
 
 		# copy layouts handlers
-		cp ./extras/openlayout ./savelayout $LOCALBIN_PATH
-		chown $USER:$USER $LOCALBIN_PATH/openlayout
-		chown $USER:$USER $LOCALBIN_PATH/savelayout
-		chmod 764 $LOCALBIN_PATH/openlayout
-		chmod 764 $LOCALBIN_PATH/savelayout
+		cp ./extras/openlayout ./extras/savelayout $GLOBBIN_PATH
+		chmod 755 $GLOBBIN_PATH/openlayout
+		chmod 755 $GLOBBIN_PATH/savelayout
 
 		# copy wallpaper changer
 		cp ./extras/feh_cw $LOCALBIN_PATH
 		chown $USER:$USER $LOCALBIN_PATH/feh_cw
-		chmod 764 $LOCALBIN_PATH/feh_cw
+		chmod 755 $LOCALBIN_PATH/feh_cw
 	
 		# copy redlight script
 		cp ./extras/redlight $LOCALBIN_PATH
 		chown $USER:$USER $LOCALBIN_PATH/redlight
-		chmod 764 $LOCALBIN_PATH/redlight				
+		chmod 755 $LOCALBIN_PATH/redlight				
 	
 		# copy hide cursor
-		cp ./extras/unclutter /usr/bin/unclutter
+		cp ./extras/unclutter $GLOBBIN_PATH/
+    chmod 755 $LOCALBIN_PATH/unclutter
+
+    # copy ufetch for terminal
+    cp ./extras/ufetch $GLOBBIN_PATH/
+    chmod 755 $LOCALBIN_PATH/ufetch
 	}
 
 
@@ -168,7 +171,7 @@ if [[ "$EUID" = 0 ]]; then
 		apt update
 		add_repos
 		apt update
-		install_pack
+		install_packs
 		install_ZSH
 		copy_conf
 		theme
