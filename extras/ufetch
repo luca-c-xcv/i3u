@@ -1,0 +1,97 @@
+#!/bin/sh
+#
+# ufetch-ubuntu - tiny system info for ubuntu
+
+## INFO
+
+# user is already defined
+host="$(hostname)"
+model="$(cat /sys/devices/virtual/dmi/id/product_version) ($(cat /sys/devices/virtual/dmi/id/product_name))"
+os="$(lsb_release -ds)"
+kernel="$(uname -sr)"
+uptime="$(uptime -p | sed 's/up //')"
+packages="$(dpkg -l | wc -l)"
+shell="$(basename "${SHELL}")"
+battery="$(acpi | awk '{print $4}' | cut -d ',' -f1) ($(acpi | awk '{print $5}' | cut -d ',' -f1 | cut -d':' -f1-2)) [$(acpi | awk '{print $3}' | cut -d ',' -f1)]"
+memory="$(free -h | sed -n 2p | awk '{print$3}') / $(free -h | sed -n 2p | awk '{print$2}')"
+localip="$(hostname -i | awk '{print $1}')"
+publicip="$(dig @resolver4.opendns.com myip.opendns.com +short -4)"
+cpu="$(cat /proc/cpuinfo | grep 'model name' | head -1 | cut -d':' -f2)"
+
+## UI DETECTION
+
+parse_rcs() {
+	for f in "${@}"; do
+		wm="$(tail -n 1 "${f}" 2> /dev/null | cut -d ' ' -f 2)"
+		[ -n "${wm}" ] && echo "${wm}" && return
+	done
+}
+
+rcwm="$(parse_rcs "${HOME}/.xinitrc" "${HOME}/.xsession")"
+
+ui='unknown'
+uitype='UI'
+if [ -n "${DE}" ]; then
+	ui="${DE}"
+	uitype='DE'
+elif [ -n "${WM}" ]; then
+	ui="${WM}"
+	uitype='WM'
+elif [ -n "${XDG_CURRENT_DESKTOP}" ]; then
+	ui="${XDG_CURRENT_DESKTOP}"
+	uitype='DE'
+elif [ -n "${DESKTOP_SESSION}" ]; then
+	ui="${DESKTOP_SESSION}"
+	uitype='DE'
+elif [ -n "${rcwm}" ]; then
+	ui="${rcwm}"
+	uitype='WM'
+elif [ -n "${XDG_SESSION_TYPE}" ]; then
+	ui="${XDG_SESSION_TYPE}"
+fi
+
+ui="$(basename "${ui}")"
+
+## DEFINE COLORS
+
+# probably don't change these
+if [ -x "$(command -v tput)" ]; then
+	bold="$(tput bold)"
+	black="$(tput setaf 0)"
+	red="$(tput setaf 1)"
+	green="$(tput setaf 2)"
+	yellow="$(tput setaf 226)"
+	blue="$(tput setaf 4)"
+	magenta="$(tput setaf 5)"
+	cyan="$(tput setaf 6)"
+	white="$(tput setaf 7)"
+	reset="$(tput sgr0)"
+fi
+
+# you can change these
+lc="${reset}${yellow}"       # labels
+nc="${reset}${bold}${red}"       # user and hostname
+ic="${reset}"                       # info
+c0="${reset}${yellow}"              # first color
+
+## OUTPUT
+
+cat <<EOF
+
+${c0}                 ${nc}${USER}${ic}@${nc}${host}${reset}
+${c0}           _     ${lc}MODEL:       ${ic}${model}${reset}
+${c0}       ---(_)    ${lc}OS:          ${ic}${os}${reset}
+${c0}   _/  ---  \\    ${lc}KERNEL:      ${ic}${kernel}${reset} 
+${c0}  (_) |   |      ${lc}UPTIME:      ${ic}${uptime}${reset} 
+${c0}    \\  --- _/    ${lc}CPU:        ${ic}${cpu}${reset}
+${c0}       ---(_)    ${lc}MEMORY:      ${ic}${memory}${reset}
+${c0}                 ${lc}BATTERY:     ${ic}${battery}${reset}
+${c0}                 ${lc}LOCAL IP:    ${ic}${localip}${reset}
+${c0}                 ${lc}PUBLIC IP:   ${ic}${publicip}${reset}
+
+EOF
+
+
+# ${lc}PACKAGES:  ${ic}${packages}${reset} 
+# ${lc}${uitype}:          ${ic}${ui}${reset}
+# ${lc}SHELL:       ${ic}${shell}${reset} 

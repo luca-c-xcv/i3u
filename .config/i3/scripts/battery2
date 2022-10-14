@@ -96,11 +96,14 @@ else:
             return config.get("color_80", "#FFFF66")
         return config.get("color_full", "#FFFFFF")
 
-    form =  '<span color="{}">{}%</span>'
-    fulltext += form.format(color(percentleft), percentleft)
-    #fulltext += timeleft
+    form =  '<span color="{}">{}{}% {}</span>'
+    fulltext = form.format(color(percentleft), fulltext, percentleft, timeleft)
+
+def send_notify():
+    os.system( "notify-send -u critical -i /usr/share/icons/Papirus-Dark/24x24/panel/battery-empty.svg -c 'device' 'Low Battery' 'Battery less than 10%'" )
 
 print(fulltext)
 print(fulltext)
 if percentleft < 10:
+    send_notify()
     exit(33)
