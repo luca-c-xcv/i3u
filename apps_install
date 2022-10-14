@@ -1,0 +1,6 @@
+#!/bin/bash
+
+function install_apps()
+  {
+    snap install chromium
+  }
