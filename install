@@ -130,8 +130,12 @@ function help()
 ## done message
 function finish()
 	{
+    RED='\033[0;31m'
+    NC='\033[0m'
 		clear
 		echo -e "
+
+${RED}WARNING: CHECK ALL CONFIGS AND SETTINGS BEFORE REBOOTING!!!${NC}
                                                                                 
             dddddddd                                                            
             d::::::d                                                        !!! 
