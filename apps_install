@@ -1,6 +1,73 @@
 #!/bin/bash
 
-function install_apps()
+function install_basic()
   {
-    snap install chromium
+    snap install chromium morgen onlyoffice-desktopeditors gimp dbeaver-ce
+
+    apt install -y yad sane sane-utils  xsane xsane-common xbacklight ufw udisks2 tmux simplescreenrecorder scrcpy openssh-server git git-flow ca-certificates curl gnupg lsb-release keepass2
   }
+
+function install_docker()
+  {
+    mkdir -p /etc/apt/keyrings
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+    
+    echo \
+    "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+    $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+    update
+    apt install docker-ce docker-ce-cli containerd.io docker-compose-plugin
+  }
+
+function install_vscode()
+  {
+    install wget gpg
+    wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
+    install -D -o root -g root -m 644 packages.microsoft.gpg /etc/apt/keyrings/packages.microsoft.gpg
+    sh -c 'echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list'
+    rm -f packages.microsoft.gpg
+
+    apt install apt-transport-https
+    apt update
+    apt install code
+  }
+
+function install_brave()
+  {
+    apt install apt-transport-https curl
+
+    curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg
+
+    echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main"|sudo tee /etc/apt/sources.list.d/brave-browser-release.list
+
+    apt update
+
+    apt install brave-browser
+  }
+
+function install_signal()
+  {
+    wget -O- https://updates.signal.org/desktop/apt/keys.asc | gpg --dearmor > signal-desktop-keyring.gpg
+    cat signal-desktop-keyring.gpg | sudo tee -a /usr/share/keyrings/signal-desktop-keyring.gpg > /dev/null
+    echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/signal-desktop-keyring.gpg] https://updates.signal.org/desktop/apt xenial main' |\
+    tee -a /etc/apt/sources.list.d/signal-xenial.list
+    apt update && apt install signal-desktop
+  }
+
+
+function main()
+  {
+    install_basic
+    install_docker
+    install_vscode
+    install_brave
+    install_signal
+  }
+
+
+if [[ "$EUID" = 0 ]]; then
+  main
+else
+	echo -e "You must run the script with root privileges"
+fi
