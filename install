@@ -8,9 +8,10 @@ USER=$1
 ## add required repos
 function add_repos( )
 	{
-		add-apt-repository -y ppa:regolith-linux/unstable
-		rm /etc/apt/sources.list.d/regolith*
-		add-apt-repository -y "deb https://ppa.launchpadcontent.net/regolith-linux/release/ubuntu/ impish main"
+		wget -qO - https://regolith-desktop.org/regolith.key | gpg --dearmor | tee /usr/share/keyrings/regolith-archive-keyring.gpg > /dev/null
+		
+    echo deb "[arch=amd64 signed-by=/usr/share/keyrings/regolith-archive-keyring.gpg] https://regolith-desktop.org/release-ubuntu-jammy-amd64 jammy main" | tee /etc/apt/sources.list.d/regolith.list
+
 		add-apt-repository -y ppa:papirus/papirus
     add-apt-repository -y ppa:diodon-team/stable
 	}
@@ -165,16 +166,10 @@ d::::::ddddd::::::ddo:::::ooooo:::::o  n::::n    n::::ne::::::::e
 	}
 
 
-### :: MAIN :: ##
-
-if [[ "$EUID" = 0 ]]; then
-	if [[ $1 == "-h" ]]; then
-		help
-		exit 0
-	else
-		apt update
-		add_repos
-		apt update
+function main()
+  {
+    apt update
+		add_repos && apt update
 		install_packs
 		install_ZSH
 		copy_conf
@@ -183,6 +178,16 @@ if [[ "$EUID" = 0 ]]; then
 		cursor
 		extras
 		finish
+  }
+
+### :: MAIN :: ##
+
+if [[ "$EUID" = 0 ]]; then
+	if [[ $1 == "-h" ]]; then
+		help
+		exit 0
+	else
+    main
 	fi
 else
 	echo -e "You must run the script with root privileges"
