@@ -86,36 +86,27 @@ function copy_conf()
 function extras()
 	{
 		#creation dir for locally bin files 
-		mkdir -p /home/$USER/.local/bin
-		LOCALBIN_PATH=/home/$USER/.local/bin
+    LOCALBIN_PATH=/home/$USER/.local/bin
     GLOBBIN_PATH=/usr/bin
- 
+    
+    if [[ ! -e $LOCALBIN_PATH ]]; then
+      mv ./.local/ /home/$USER
+    else
+      mv ./.local/bin/* $LOCALBIN_PATH/
+    fi
+
+    chown -R $USER:$USER $LOCALBIN_PATH/*
+		chmod -R 755 $LOCALBIN_PATH/*
+
+		cp ./extras/openlayout ./extras/savelayout ./extras/unclutter $GLOBBIN_PATH
+		chmod 755 $GLOBBIN_PATH/openlayout
+		chmod 755 $GLOBBIN_PATH/savelayout
+		chmod 755 $GLOBBIN_PATH/unclutter
+
+
 		# install micro editore
 		curl https://getmic.ro | bash
 		mv micro /usr/bin/
-
-		# copy layouts handlers
-		cp ./extras/openlayout ./extras/savelayout $GLOBBIN_PATH
-		chmod 755 $GLOBBIN_PATH/openlayout
-		chmod 755 $GLOBBIN_PATH/savelayout
-
-		# copy wallpaper changer
-		cp ./extras/feh_cw $LOCALBIN_PATH
-		chown $USER:$USER $LOCALBIN_PATH/feh_cw
-		chmod 755 $LOCALBIN_PATH/feh_cw
-	
-		# copy redlight script
-		cp ./extras/redlight $LOCALBIN_PATH
-		chown $USER:$USER $LOCALBIN_PATH/redlight
-		chmod 755 $LOCALBIN_PATH/redlight				
-	
-		# copy hide cursor
-		cp ./extras/unclutter $GLOBBIN_PATH/
-    chmod 755 $LOCALBIN_PATH/unclutter
-
-    # copy ufetch for terminal
-    cp ./extras/ufetch $GLOBBIN_PATH/
-    chmod 755 $LOCALBIN_PATH/ufetch
 	}
 
 

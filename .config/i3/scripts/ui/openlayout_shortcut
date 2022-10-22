@@ -1,0 +1,11 @@
+#!/bin/bash
+
+currentws=$(i3-msg -t get_workspaces | jq -r '.[] | select(.focused==true).name')
+
+layouts=$(ls ~/.config/i3/layouts | awk -F'.' '{print $1}')
+
+in=$(echo "$layouts" | rofi -dmenu -p "i3 Layouts" -config ~/.config/rofi/rofidmenu.rasi)
+
+if [[ $in ]]; then
+  openlayout $currentws $in
+fi

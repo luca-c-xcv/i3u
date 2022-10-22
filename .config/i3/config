@@ -338,16 +338,16 @@ bindsym $super+Ctrl+r restart
 
 ## Session // Logout // <><Shift> e ##
 for_window [class="(?i)Yad"] floating enable
-bindsym $super+Shift+e exec ~/.config/i3/scripts/logoutShortcut --class=floating_window
+bindsym $super+Shift+e exec ~/.config/i3/scripts/ui/logoutShortcut --class=floating_window
 
 ## Session // Power Menu // <><Shift> p ##
-bindsym $super+Shift+p exec --no-startup-id ~/.config/i3/scripts/powermenu
+bindsym $super+Shift+p exec --no-startup-id ~/.config/i3/scripts/ui/powermenu
 
 ## Session // Lock Screen // <> Escape ##
 bindsym $super+Escape exec i3lock-fancy
 
-## Session // Sleep // <><Shift> s ##
-bindsym $super+Shift+s exec systemctl suspend
+## Session // Sleep // <><Shift> Escape ##
+bindsym $super+Shift+s exec systemctl Escape
 
 ###############################################################################
 # System Management
@@ -392,6 +392,9 @@ bindsym XF86AudioPrev exec --no-startup-id playerctl previous # backward song
 # bindsym XF86MonBrightnessUp  # brightness up
 
 
+bindsym $super+Shift+o exec ~/.config/i3/scripts/ui/openlayout_shortcut
+
+
 ###############################################################################
 # Workspace Management
 ###############################################################################
@@ -408,7 +411,7 @@ for_window [class="Blueman-manager"] floating enable
 for_window [class="Gnome-control-center"] floating enable
 for_window [class="Gnome-calculator"] floating enable
 
-workspace_auto_back_and_forth yes
+workspace_auto_back_and_forth no
 
 ###############################################################################
 # Window Resize and Gaps
@@ -553,9 +556,6 @@ exec --no-startup-id /usr/bin/nm-applet
 
 # load blueman-applet to handle and see the bluetooth status
 exec --no-startup-id /usr/bin/blueman-applet
-
-# load redshift
-exec --no-startup-id /usr/bin/redshift
 
 # load picom
 exec --no-startup-id /usr/bin/picom --config ~/.config/picom/config
