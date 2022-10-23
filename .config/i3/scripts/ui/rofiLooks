@@ -6,7 +6,7 @@ looks=$( ls /usr/share/themes/ | grep "Flat-Remix-GTK" )
 
 colors=$( echo "$looks" | awk -F'-' '{print $4,$5,$6}')
 
-in=$(echo "$looks" | rofi -dmenu -p "Folder Looks" -config ~/.config/rofi/rofidmenu.rasi)
+in=$(echo "$looks" | rofi -dmenu -p "GTK Themes" -config ~/.config/rofi/rofidmenu.rasi)
 
 if [[ $in ]]; then
   sed -i "s/${old}/${in}/" $HOME/.config/gtk-3.0/settings.ini

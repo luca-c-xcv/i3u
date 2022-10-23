@@ -131,13 +131,13 @@ bindsym $super+Shift+space exec rofi -show run -config ~/.config/rofi/rofidmenu.
 bindsym $super+Ctrl+space exec rofi -show window -config ~/.config/rofi/rofidmenu.rasi
 
 ## Launch // This Dialog // <><Shift> ? ##
-bindsym $super+Shift+question exec --no-startup-id /usr/bin/remontoire-toggle
+# bindsym $super+Shift+question exec --no-startup-id /usr/bin/remontoire-toggle
 
 ## Launch // File Search // <><Alt> Space ##
 # bindsym $super+$alt+space exec rofi -show find -modi find:/usr/share/rofi/modi/finder.sh -config ~/.config/rofi/rofidmenu.rasi
 
 ## Launch // Look Selector // <><Alt> l ##
-# bindsym $super+$alt+l exec rofi -show look -modi look:/usr/share/rofi/modi/look-selector.sh
+bindsym $super+$alt+l exec ~/.config/i3/scripts/ui/rofiLooks
 
 ###############################################################################
 # Window and Workspace Navigation
@@ -347,7 +347,7 @@ bindsym $super+Shift+p exec --no-startup-id ~/.config/i3/scripts/ui/powermenu
 bindsym $super+Escape exec i3lock-fancy
 
 ## Session // Sleep // <><Shift> Escape ##
-bindsym $super+Shift+s exec systemctl Escape
+bindsym $super+Shift+Escape exec systemctl suspend
 
 ###############################################################################
 # System Management
