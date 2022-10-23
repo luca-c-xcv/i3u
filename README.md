@@ -1,6 +1,7 @@
 # i3u
 
-i3 window manager custom configuration with some script to customize Debian and its derivatives
+i3 window manager custom configuration with some script to customize Debian and its derivatives<br/>
+**_(Developed on Ubuntu)_**
 
 ![demo pic](extras/demo.png)
 
