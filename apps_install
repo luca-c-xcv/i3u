@@ -1,36 +1,41 @@
 #!/bin/bash
 
+USER=$1
+
 function install_basic()
   {
     snap install chromium morgen onlyoffice-desktopeditors gimp dbeaver-ce
 
-    apt install -y yad sane sane-utils  xsane xsane-common xbacklight ufw udisks2 tmux simplescreenrecorder scrcpy openssh-server git git-flow ca-certificates curl gnupg lsb-release keepass2
+    apt install -y yad sane sane-utils  xsane xsane-common xbacklight ufw udisks2 tmux simplescreenrecorder scrcpy openssh-server git git-flow ca-certificates curl gnupg lsb-release keepass2 scrcpy
   }
 
 function install_docker()
   {
-    mkdir -p /etc/apt/keyrings
-    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+    if [[ ! -d /etc/apt/keyrings  ]]; then
+      mkdir -p /etc/apt/keyrings
+    fi
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
     
     echo \
     "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
-    $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+    $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
 
-    update
-    apt install docker-ce docker-ce-cli containerd.io docker-compose-plugin
+    apt update && apt install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
   }
 
 function install_vscode()
   {
-    install wget gpg
+    install wget gpg apt-transport-https
+    
     wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
+    
     install -D -o root -g root -m 644 packages.microsoft.gpg /etc/apt/keyrings/packages.microsoft.gpg
+    
     sh -c 'echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list'
+    
     rm -f packages.microsoft.gpg
 
-    apt install apt-transport-https
-    apt update
-    apt install code
+    apt update && apt install code
   }
 
 function install_brave()
@@ -39,21 +44,55 @@ function install_brave()
 
     curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg
 
-    echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main"|sudo tee /etc/apt/sources.list.d/brave-browser-release.list
+    echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main"|tee /etc/apt/sources.list.d/brave-browser-release.list
 
-    apt update
-
-    apt install brave-browser
+    apt update && apt install brave-browser
   }
 
 function install_signal()
   {
     wget -O- https://updates.signal.org/desktop/apt/keys.asc | gpg --dearmor > signal-desktop-keyring.gpg
-    cat signal-desktop-keyring.gpg | sudo tee -a /usr/share/keyrings/signal-desktop-keyring.gpg > /dev/null
+    
+    cat signal-desktop-keyring.gpg | tee -a /usr/share/keyrings/signal-desktop-keyring.gpg > /dev/null
+    
     echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/signal-desktop-keyring.gpg] https://updates.signal.org/desktop/apt xenial main' |\
+    
     tee -a /etc/apt/sources.list.d/signal-xenial.list
+    
     apt update && apt install signal-desktop
   }
+
+function install_otherApps()
+  {
+    if [[ ! -d /home/$USER/Applications ]]; then
+      mkdir -p /home/$USER/Applications
+    fi
+
+    ## TELEGRAM
+    wget https://telegram.org/dl/desktop/linux -O Telegram.tar.xz
+    tar -xvf Telegram.tar.xz
+    mv Telegram /home/$USER/Applications
+    rm Telegram.tar.xz
+
+    ## TOR
+    wget https://www.torproject.org/dist/torbrowser/11.5.4/tor-browser-linux64-11.5.4_it.tar.xz -O Tor.tar.xz
+    tar -xvf Tor.tar.xz
+    mv tor* Tor && mv Tor /home/$USER/Applications
+    rm Tor.tar.xz
+
+    ## GMAIL
+    wget https://github.com/timche/gmail-desktop/releases/download/v2.25.3/gmail-desktop-2.25.3-linux.AppImage -O gmail.AppImage
+    mv gmail.AppImage /home/$USER/Applications
+  }
+
+
+## help message
+function help()
+	{
+		echo "The script has to run as below:"
+		echo -e "\t sudo /path/to/apps_install <user>"
+		echo "<user> must be replaced with the username who want install the apps"
+	}
 
 
 function main()
@@ -63,11 +102,18 @@ function main()
     install_vscode
     install_brave
     install_signal
+    install_otherApps
   }
 
 
 if [[ "$EUID" = 0 ]]; then
-  main
+  if [[ $1 == "-h" ]]; then
+    help
+    exit 0
+  else
+    main
+  fi
 else
 	echo -e "You must run the script with root privileges"
+	echo -e "Lauch the script with -h option for help"
 fi

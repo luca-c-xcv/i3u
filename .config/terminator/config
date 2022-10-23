@@ -7,7 +7,7 @@
 [profiles]
   [[default]]
     icon_bell = False
-    background_color = "#272934"
+    background_color = "#0b0b0b"
     background_darkness = 0.95
     background_type = transparent
     backspace_binding = automatic

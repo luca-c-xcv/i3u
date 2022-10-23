@@ -5,9 +5,9 @@
 - [x] add media shortcut in conf
 
 ### rofi / theme
-- 
-[-] search file: `find`
-- [-] select look
+
+- [x] select look
+- [] search file: `find`
 
 
 ## GTK
@@ -16,4 +16,4 @@
 
 ## configs
 
-- [] redshift 
+- [x] redshift 
