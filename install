@@ -44,9 +44,9 @@ function install_packs( )
 
 
 ## copy themes
-function theme()
+function themes()
 	{
-		rsync -av --progress theme/* /usr/share/themes/
+		rsync -av --progress themes/* /usr/share/themes/
 	}
 
 
@@ -164,7 +164,7 @@ function main()
 		install_packs
 		install_ZSH
 		copy_conf
-		theme
+		themes
 		icon
 		cursor
 		extras
