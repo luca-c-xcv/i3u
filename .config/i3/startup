@@ -2,6 +2,4 @@
 
 ~/.local/bin/feh_cw &
 
-/usr/bin/diodon &
-
 /usr/bin/redshift &

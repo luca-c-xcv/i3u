@@ -118,8 +118,8 @@ set_from_resource $ws10_key i3-wm.workspace.10.key 0
 ## Launch // Terminal // <> Enter ##
 bindsym $super+Return exec /usr/bin/x-terminal-emulator
 
-## Launch // Browser // <><Shift> Enter ##
-bindsym $super+Shift+Return exec gtk-launch $(xdg-settings get default-web-browser)
+## Launch // Browser // <>b ##
+bindsym $super+b exec gtk-launch $(xdg-settings get default-web-browser)
 
 ## Launch // Application // <> Space ##
 bindsym $super+space exec rofi -modi drun -show drun -config ~/.config/rofi/rofidmenu.rasi
@@ -392,7 +392,10 @@ bindsym XF86AudioPrev exec --no-startup-id playerctl previous # backward song
 # bindsym XF86MonBrightnessUp  # brightness up
 
 
-bindsym $super+Shift+o exec ~/.config/i3/scripts/ui/openlayout_shortcut
+## extra shortcut
+bindsym $super+Shift+Return exec /usr/bin/code
+bindsym $super+Shift+l exec ~/.config/i3/scripts/openlayout_shortcut
+bindsym $super+Shift+m exec ~/.local/bin/espace
 
 
 ###############################################################################
@@ -553,7 +556,6 @@ exec --no-startup-id /usr/bin/unclutter -b
 # Load nm-applet to provide auth dialogs for network access
 exec --no-startup-id /usr/bin/nm-applet
 
-
 # load blueman-applet to handle and see the bluetooth status
 exec --no-startup-id /usr/bin/blueman-applet
 
@@ -564,4 +566,5 @@ exec --no-startup-id /usr/bin/picom --config ~/.config/picom/config
 exec "xautolock -detectsleep -time 5 -locker \"i3lock-fancy\"" #lock
 exec "xset s 300; xset s blank" #screensaver
 
-
+## startup applications
+exec --no-startup-id ~/.config/i3/startup

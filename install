@@ -36,10 +36,10 @@ function install_packs( )
 		apt install -y make git jq curl wget ffmpeg terminator pavucontrol mlocate
 
 		#install i3 & plugins
-		apt install -y i3-gaps i3blocks i3lock i3lock-fancy dunst suckless-tools rofi 
+		apt update && apt install -y i3-gaps i3blocks i3lock i3lock-fancy dunst suckless-tools rofi 
 
 		#install features
-		apt install -y feh fortune fonts-font-awesome fonts-jetbrains-mono papirus-folders papirus-icon-theme oxygen-cursor-theme oxygen-cursor-theme-extra nemo cowsay bluez bluez-tools blueman yad playerctl pulseaudio-utils xautolock redshift diodon
+		apt update && apt install -y feh fortune fonts-font-awesome fonts-jetbrains-mono papirus-folders papirus-icon-theme oxygen-cursor-theme oxygen-cursor-theme-extra nemo cowsay bluez bluez-tools blueman yad playerctl pulseaudio-utils xautolock redshift diodon picom
 	}
 
 
@@ -79,6 +79,8 @@ function copy_conf()
 		rsync -av --progress --chown=$USER:$USER .config/* /home/$USER/.config/
 		rsync -av --progress --chown=$USER:$USER .zshrc .aliases /home/$USER/
 		rsync -av --progress --chown=$USER:$USER zsh_themes/* /home/$USER/.oh-my-zsh/custom/themes
+
+    chmod -R 755 /home/$USER/.config/i3/startup /home/$USER/.config/i3/scripts
 	}
 
 
@@ -90,9 +92,9 @@ function extras()
     GLOBBIN_PATH=/usr/bin
     
     if [[ ! -e $LOCALBIN_PATH ]]; then
-      mv ./.local/ /home/$USER
+      cp -r ./.local/ /home/$USER
     else
-      mv ./.local/bin/* $LOCALBIN_PATH/
+      cp ./.local/bin/* $LOCALBIN_PATH/
     fi
 
     chown -R $USER:$USER $LOCALBIN_PATH/*
@@ -167,6 +169,7 @@ function main()
 		themes
 		icon
 		cursor
+    fonts
 		extras
 		finish
   }

@@ -25,7 +25,7 @@ function install_docker()
 
 function install_vscode()
   {
-    install wget gpg apt-transport-https
+    apt install -y wget gpg apt-transport-https
     
     wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
     
@@ -35,18 +35,18 @@ function install_vscode()
     
     rm -f packages.microsoft.gpg
 
-    apt update && apt install code
+    apt update && apt install -y code
   }
 
 function install_brave()
   {
-    apt install apt-transport-https curl
+    apt install -y apt-transport-https curl
 
     curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg
 
     echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main"|tee /etc/apt/sources.list.d/brave-browser-release.list
 
-    apt update && apt install brave-browser
+    apt update && apt install -y brave-browser
   }
 
 function install_signal()
@@ -59,7 +59,7 @@ function install_signal()
     
     tee -a /etc/apt/sources.list.d/signal-xenial.list
     
-    apt update && apt install signal-desktop
+    apt update && apt install -y signal-desktop
   }
 
 function install_otherApps()
