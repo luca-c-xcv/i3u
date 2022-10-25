@@ -2,30 +2,46 @@
 
 ### :: VARIABLES :: ###
 USER=$1
+RED='\033[0;31m'
+CYAN='\033[0;36m'
+NC='\033[0m'
 
 ### :: FUNCTIONS :: ###
+
+function waiting()
+  {
+    echo -e "\n..." && sleep 1 && echo -e "...\n" && sleep 1
+  }
+
 
 ## add required repos
 function add_repos( )
 	{
+    echo -e "${CYAN}adding new repos...${NC}\n"
 		wget -qO - https://regolith-desktop.org/regolith.key | gpg --dearmor | tee /usr/share/keyrings/regolith-archive-keyring.gpg > /dev/null
-		
+		waiting
+    
     echo deb "[arch=amd64 signed-by=/usr/share/keyrings/regolith-archive-keyring.gpg] https://regolith-desktop.org/release-ubuntu-jammy-amd64 jammy main" | tee /etc/apt/sources.list.d/regolith.list
 
-		add-apt-repository -y ppa:papirus/papirus
-    add-apt-repository -y ppa:diodon-team/stable
+		add-apt-repository -y ppa:papirus/papirus && apt update
+    waiting
+    add-apt-repository -y ppa:diodon-team/stable && apt update
+    echo -e "\n${CYAN}repos added${NC}"
 	}
 
 
 ## install zsh
 function install_ZSH()
 	{
-		apt install -y zsh
+    echo -e "${CYAN}installing ZSH...${NC}\n"
+		apt update && apt install -y zsh
+    waiting
 		chsh -s /bin/zsh $USER
 		wget -O /tmp/zsh_install.sh https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh
 		chmod +x /tmp/zsh_install.sh
 		su -c "/tmp/zsh_install.sh --unattended" - $USER
 		rm /tmp/zsh_install.sh
+    echo -e "\n${CYAN}ZSH installed${NC}"
 	}
 
 
@@ -33,54 +49,80 @@ function install_ZSH()
 function install_packs( )
 	{
 		#install essentials
-		apt install -y make git jq curl wget ffmpeg terminator pavucontrol mlocate
+    echo -e "${CYAN}installing essential tools${NC}\n"
+		apt update && apt install -y make git jq curl wget ffmpeg terminator pavucontrol mlocate
+    waiting
+    echo -e "\n${CYAN}essentials installed${NC}"
 
 		#install i3 & plugins
+    echo -e "${CYAN}installing i3wm environment${NC}\n"
 		apt update && apt install -y i3-gaps i3blocks i3lock i3lock-fancy dunst suckless-tools rofi 
+    waiting
+    echo -e "\n${CYAN}i3 installed${NC}"
 
 		#install features
+    echo -e "${CYAN}installing extra tools${NC}\n"
 		apt update && apt install -y feh fortune fonts-font-awesome fonts-jetbrains-mono papirus-folders papirus-icon-theme oxygen-cursor-theme oxygen-cursor-theme-extra nemo cowsay bluez bluez-tools blueman yad playerctl pulseaudio-utils xautolock redshift diodon picom
+    echo -e "\n${CYAN}extras installed${NC}"
 	}
 
 
 ## copy themes
 function themes()
 	{
+    echo -e "${CYAN}installing themes${NC}\n"
 		rsync -av --progress themes/* /usr/share/themes/
+    waiting
+    echo -e "\n${CYAN}themes installed${NC}"
 	}
 
 
 ## setup icons
 function icon()
 	{
+    echo -e "${CYAN}installing icons${NC}\n"
 		papirus-folders -C adwaita --theme Papirus-Dark
+    waiting
+    echo -e "\n${CYAN}icons installed${NC}"
 	}
 
 	
 ## setup cursor
 function cursor()
 	{
+    echo -e "${CYAN}installing cursors${NC}\n"
 		update-alternatives --set x-cursor-theme /etc/X11/cursors/oxy-terra.theme
+    waiting
+    echo -e "\n${CYAN}cursors installed${NC}"
 	}
 
 
 ## copy fonts
 function fonts()
 	{
+    echo -e "${CYAN}installing fonts${NC}\n"
 		mkdir -p /home/$USER/.local/share/fonts/customFonts
 		rsync -av --progress --chown=$USER:$USER ./fonts/Montserrat /home/$USER/.local/share/fonts/customFonts/
+    waiting
 		fc-cache -f -v
+    waiting
+    echo -e "\n${CYAN}fonts installed${NC}"
 	}
 
 
 ## copy configuration files and them correleted settings
 function copy_conf()
 	{
+    echo -e "${CYAN}copying configs${NC}\n"
 		rsync -av --progress --chown=$USER:$USER .config/* /home/$USER/.config/
+    waiting
 		rsync -av --progress --chown=$USER:$USER .zshrc .aliases /home/$USER/
-		rsync -av --progress --chown=$USER:$USER zsh_themes/* /home/$USER/.oh-my-zsh/custom/themes
+    waiting
+    rsync -av --progress --chown=$USER:$USER zsh_themes/* /home/$USER/.oh-my-zsh/custom/themes
+    waiting
 
     chmod -R 755 /home/$USER/.config/i3/startup /home/$USER/.config/i3/scripts
+    echo -e "\n${CYAN}configs copied${NC}"
 	}
 
 
@@ -97,10 +139,12 @@ function extras()
       cp ./.local/bin/* $LOCALBIN_PATH/
     fi
 
+    echo -e "${CYAN}installing extra components${NC}\n"
     chown -R $USER:$USER $LOCALBIN_PATH/*
 		chmod -R 755 $LOCALBIN_PATH/*
 
 		cp ./extras/openlayout ./extras/savelayout ./extras/unclutter $GLOBBIN_PATH
+    waiting
 		chmod 755 $GLOBBIN_PATH/openlayout
 		chmod 755 $GLOBBIN_PATH/savelayout
 		chmod 755 $GLOBBIN_PATH/unclutter
@@ -108,7 +152,9 @@ function extras()
 
 		# install micro editore
 		curl https://getmic.ro | bash
+    waiting
 		mv micro /usr/bin/
+    echo -e "\n${CYAN}components added${NC}"
 	}
 
 
@@ -124,8 +170,6 @@ function help()
 ## done message
 function finish()
 	{
-    RED='\033[0;31m'
-    NC='\033[0m'
 		clear
 		echo -e "
 
@@ -162,7 +206,7 @@ d::::::ddddd::::::ddo:::::ooooo:::::o  n::::n    n::::ne::::::::e
 function main()
   {
     apt update
-		add_repos && apt update
+		add_repos
 		install_packs
 		install_ZSH
 		copy_conf
