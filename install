@@ -2,127 +2,140 @@
 
 ### :: VARIABLES :: ###
 USER=$1
+SHCHOSEN=''
 RED='\033[0;31m'
 CYAN='\033[0;36m'
 NC='\033[0m'
 
 ### :: FUNCTIONS :: ###
 
-function waiting()
+function _waiting()
   {
-    echo -e "\n..." && sleep 1 && echo -e "...\n" && sleep 1
+    echo -e "${CYAN}..." && sleep 1 && echo -e "...${NC}" && sleep 1
+  }
+
+
+function _printMsg()
+  {
+    echo -e "${CYAN}$1${NC}\n"
+  }
+
+
+function _chooseSH()
+  {
+    echo -e "${RED}Type selection number for alternative shell${NC}"
+    echo -e "${RED}\t 1)\t bash${NC}"
+    echo -e "${RED}\t 2)\t zsh${NC}"
+    read -p "Choose a number " SHCHOSEN
   }
 
 
 ## add required repos
 function add_repos( )
 	{
-    echo -e "${CYAN}adding new repos...${NC}\n"
-		wget -qO - https://regolith-desktop.org/regolith.key | gpg --dearmor | tee /usr/share/keyrings/regolith-archive-keyring.gpg > /dev/null
-		waiting
-    
+    _printMsg "adding new repos..."
+		wget -qO - https://regolith-desktop.org/regolith.key | gpg --dearmor | tee /usr/share/keyrings/regolith-archive-keyring.gpg > /dev/null && _waiting
     echo deb "[arch=amd64 signed-by=/usr/share/keyrings/regolith-archive-keyring.gpg] https://regolith-desktop.org/release-ubuntu-jammy-amd64 jammy main" | tee /etc/apt/sources.list.d/regolith.list
-
-		add-apt-repository -y ppa:papirus/papirus && apt update
-    waiting
+		add-apt-repository -y ppa:papirus/papirus && apt update && _waiting
     add-apt-repository -y ppa:diodon-team/stable && apt update
-    echo -e "\n${CYAN}repos added${NC}"
+    _printMsg "repos added"
 	}
 
 
 ## install zsh
 function install_ZSH()
 	{
-    echo -e "${CYAN}installing ZSH...${NC}\n"
-		apt update && apt install -y zsh
-    waiting
+    _printMsg "installing ZSH..."
+		apt update && apt install -y zsh && _waiting
 		chsh -s /bin/zsh $USER
 		wget -O /tmp/zsh_install.sh https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh
 		chmod +x /tmp/zsh_install.sh
 		su -c "/tmp/zsh_install.sh --unattended" - $USER
 		rm /tmp/zsh_install.sh
-    echo -e "\n${CYAN}ZSH installed${NC}"
+    _printMsg "ZSH installed"
 	}
+## install bash
+function install_BASH()
+  {
+    _printMsg "installing BASH..."
+		chsh -s /bin/bash $USER
+		wget -O /tmp/bash_install.sh https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh
+		chmod +x /tmp/bash_install.sh
+		su -c "/tmp/bash_install.sh --unattended" - $USER
+		rm /tmp/bash_install.sh
+    cp -r ./extras/myagnoster /home/$USER/.oh-my-bash/custom/themes/
+    sed -i 's/OSH_THEME="font"/OSH_THEME="myagnoster"/' /home/$USER/.bashrc
+    _printMsg "BASH installed"
+  }
 
 
 ## install required packages
 function install_packs( )
 	{
 		#install essentials
-    echo -e "${CYAN}installing essential tools${NC}\n"
-		apt update && apt install -y make git jq curl wget ffmpeg terminator pavucontrol mlocate
-    waiting
-    echo -e "\n${CYAN}essentials installed${NC}"
+    _printMsg "installing essential tools"
+		apt update && apt install -y make git jq curl wget ffmpeg terminator pavucontrol mlocate && _waiting
+    _printMsg "essentials installed"
 
 		#install i3 & plugins
-    echo -e "${CYAN}installing i3wm environment${NC}\n"
-		apt update && apt install -y i3-gaps i3blocks i3lock i3lock-fancy dunst suckless-tools rofi 
-    waiting
-    echo -e "\n${CYAN}i3 installed${NC}"
+    _printMsg "installing i3wm environment"
+		apt update && apt install -y i3-gaps i3blocks i3lock i3lock-fancy dunst suckless-tools rofi && _waiting
+    _printMsg "i3 installed"
 
 		#install features
-    echo -e "${CYAN}installing extra tools${NC}\n"
+    _printMsg "installing extra tools"
 		apt update && apt install -y feh fortune fonts-font-awesome fonts-jetbrains-mono papirus-folders papirus-icon-theme oxygen-cursor-theme oxygen-cursor-theme-extra nemo cowsay bluez bluez-tools blueman yad playerctl pulseaudio-utils xautolock redshift diodon picom
-    echo -e "\n${CYAN}extras installed${NC}"
+    _printMsg "extras installed"
 	}
 
 
 ## copy themes
 function themes()
 	{
-    echo -e "${CYAN}installing themes${NC}\n"
-		rsync -av --progress themes/* /usr/share/themes/
-    waiting
-    echo -e "\n${CYAN}themes installed${NC}"
+    _printMsg "installing themes"
+		rsync -av --progress themes/* /usr/share/themes/ && _waiting
+    _printMsg "themes installed"
 	}
 
 
 ## setup icons
 function icon()
 	{
-    echo -e "${CYAN}installing icons${NC}\n"
-		papirus-folders -C adwaita --theme Papirus-Dark
-    waiting
-    echo -e "\n${CYAN}icons installed${NC}"
+    _printMsg "installing icons"
+		papirus-folders -C adwaita --theme Papirus-Dark && _waiting
+    _printMsg "icons installed"
 	}
 
 	
 ## setup cursor
 function cursor()
 	{
-    echo -e "${CYAN}installing cursors${NC}\n"
-		update-alternatives --set x-cursor-theme /etc/X11/cursors/oxy-terra.theme
-    waiting
-    echo -e "\n${CYAN}cursors installed${NC}"
+    _printMsg "installing cursors"
+		update-alternatives --set x-cursor-theme /etc/X11/cursors/oxy-terra.theme && _waiting
+    _printMsg "cursors installed"
 	}
 
 
 ## copy fonts
 function fonts()
 	{
-    echo -e "${CYAN}installing fonts${NC}\n"
+    _printMsg "installing fonts"
 		mkdir -p /home/$USER/.local/share/fonts/customFonts
-		rsync -av --progress --chown=$USER:$USER ./fonts/Montserrat /home/$USER/.local/share/fonts/customFonts/
-    waiting
-		fc-cache -f -v
-    waiting
-    echo -e "\n${CYAN}fonts installed${NC}"
+		rsync -av --progress --chown=$USER:$USER ./fonts/Montserrat /home/$USER/.local/share/fonts/customFonts/ && _waiting
+		fc-cache -f -v && _waiting
+    _printMsg "fonts installed"
 	}
 
 
 ## copy configuration files and them correleted settings
 function copy_conf()
 	{
-    echo -e "${CYAN}copying configs${NC}\n"
-		rsync -av --progress --chown=$USER:$USER .config/* /home/$USER/.config/
-    waiting
-		rsync -av --progress --chown=$USER:$USER .zshrc .aliases /home/$USER/
-    waiting
-    rsync -av --progress --chown=$USER:$USER zsh_themes/* /home/$USER/.oh-my-zsh/custom/themes
-    waiting
-
+    _printMsg "copying configs"
+		rsync -av --progress --chown=$USER:$USER .config/* /home/$USER/.config/ && _waiting
+		rsync -av --progress --chown=$USER:$USER .zshrc .aliases /home/$USER/ && _waiting
+    rsync -av --progress --chown=$USER:$USER zsh_themes/* /home/$USER/.oh-my-zsh/custom/themes && _waiting
     chmod -R 755 /home/$USER/.config/i3/startup /home/$USER/.config/i3/scripts
-    echo -e "\n${CYAN}configs copied${NC}"
+    _printMsg "configs copied"
 	}
 
 
@@ -139,24 +152,30 @@ function extras()
       cp ./.local/bin/* $LOCALBIN_PATH/
     fi
 
-    echo -e "${CYAN}installing extra components${NC}\n"
+    _printMsg "installing extra components"
     chown -R $USER:$USER $LOCALBIN_PATH/*
 		chmod -R 755 $LOCALBIN_PATH/*
-
-		cp ./extras/openlayout ./extras/savelayout ./extras/unclutter $GLOBBIN_PATH
-    waiting
+		cp ./extras/openlayout ./extras/savelayout ./extras/unclutter $GLOBBIN_PATH && _waiting
 		chmod 755 $GLOBBIN_PATH/openlayout
 		chmod 755 $GLOBBIN_PATH/savelayout
 		chmod 755 $GLOBBIN_PATH/unclutter
 
-
 		# install micro editore
-		curl https://getmic.ro | bash
-    waiting
+		curl https://getmic.ro | bash && _waiting
 		mv micro /usr/bin/
-    echo -e "\n${CYAN}components added${NC}"
+    _printMsg "components added"
 	}
 
+
+function apps()
+  {
+    read -p "Do you want to install the other applications? [yes/NO] " vapp
+
+    if [[ ${vapp} == "y" || ${vapp} == "yes" ]]; then
+      $(./apps_install $USER)
+    fi
+
+  }
 
 ## help message
 function help()
@@ -208,19 +227,26 @@ function main()
     apt update
 		add_repos
 		install_packs
-		install_ZSH
+
+    if [[ $SHCHOSEN -eq 1 ]]; then
+      install_BASH
+    elif [[ $SHCHOSEN -eq 2 ]]; then
+      install_ZSH
+    fi
+		
 		copy_conf
 		themes
 		icon
 		cursor
     fonts
 		extras
+    apps
 		finish
   }
 
 ### :: MAIN :: ##
 
-if [[ "$EUID" = 0 ]]; then
+if [[ "$EUID" = 0 && $# -eq 1 ]]; then
 	if [[ $1 == "-h" ]]; then
 		help
 		exit 0
@@ -231,5 +257,3 @@ else
 	echo -e "You must run the script with root privileges"
 	echo -e "Lauch the script with -h option for help"
 fi
-
-
