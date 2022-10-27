@@ -52,6 +52,17 @@ function install_ZSH()
 		chmod +x /tmp/zsh_install.sh
 		su -c "/tmp/zsh_install.sh --unattended" - $USER
 		rm /tmp/zsh_install.sh
+
+    rsync -av --progress --chown=$USER:$USER ./zsh_themes/* /home/$USER/.oh-my-zsh/custom/themes
+
+    sed -i 's/ZSH_THEME="font"/ZSH_THEME="myagnoster"/' /home/$USER/.zshrc
+    echo -e "source $HOME/.aliases" >> /home/$USER/.zshrc
+    if [[ -f /home/$USER/.aliases ]]; then
+      cat ./.aliases >> /home/$USER/.aliases
+    else
+      rsync -av --progress --chown=$USER:$USER ./.aliases /home/$USER/.aliases
+    fi
+
     _printMsg "ZSH installed"
 	}
 ## install bash
@@ -63,8 +74,19 @@ function install_BASH()
 		chmod +x /tmp/bash_install.sh
 		su -c "/tmp/bash_install.sh --unattended" - $USER
 		rm /tmp/bash_install.sh
-    cp -r ./extras/myagnoster /home/$USER/.oh-my-bash/custom/themes/
+
+    rsync -av --progress --chown=$USER:$USER ./bash_themes/* /home/$USER/.oh-my-bash/custom/themes/
+
     sed -i 's/OSH_THEME="font"/OSH_THEME="myagnoster"/' /home/$USER/.bashrc
+    echo -e "ufetch" >> /home/$USER/.bashrc
+
+    if [[ -f /home/$USER/.bash_aliases ]]; then
+      cat ./.bash_aliases >> /home/$USER/.bash_aliases
+    else
+      rsync -av --progress --chown=$USER:$USER ./.bash_aliases /home/$USER/.bash_aliases
+    fi
+
+
     _printMsg "BASH installed"
   }
 
@@ -132,8 +154,6 @@ function copy_conf()
 	{
     _printMsg "copying configs"
 		rsync -av --progress --chown=$USER:$USER .config/* /home/$USER/.config/ && _waiting
-		rsync -av --progress --chown=$USER:$USER .zshrc .aliases /home/$USER/ && _waiting
-    rsync -av --progress --chown=$USER:$USER zsh_themes/* /home/$USER/.oh-my-zsh/custom/themes && _waiting
     chmod -R 755 /home/$USER/.config/i3/startup /home/$USER/.config/i3/scripts
     _printMsg "configs copied"
 	}
@@ -142,20 +162,21 @@ function copy_conf()
 ## install extra tools
 function extras()
 	{
-		#creation dir for locally bin files 
+    _printMsg "installing extra components"
+		
+    #creation dir for locally bin files 
     LOCALBIN_PATH=/home/$USER/.local/bin
     GLOBBIN_PATH=/usr/bin
     
-    if [[ ! -e $LOCALBIN_PATH ]]; then
-      cp -r ./.local/ /home/$USER
+    if [[ -d $LOCALBIN_PATH ]]; then
+      rsync -av --progress --chown=$USER:$USER ./.local/bin/* $LOCALBIN_PATH/
     else
-      cp ./.local/bin/* $LOCALBIN_PATH/
+      rsync -av --progress --chown=$USER:$USER ./.local/bin /home/$USER/.local
     fi
 
-    _printMsg "installing extra components"
-    chown -R $USER:$USER $LOCALBIN_PATH/*
+		rsync -av --progress ./extras/openlayout ./extras/savelayout ./extras/unclutter $GLOBBIN_PATH && _waiting
+    
 		chmod -R 755 $LOCALBIN_PATH/*
-		cp ./extras/openlayout ./extras/savelayout ./extras/unclutter $GLOBBIN_PATH && _waiting
 		chmod 755 $GLOBBIN_PATH/openlayout
 		chmod 755 $GLOBBIN_PATH/savelayout
 		chmod 755 $GLOBBIN_PATH/unclutter
