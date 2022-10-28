@@ -193,7 +193,7 @@ function apps()
     read -p "Do you want to install the other applications? [yes/NO] " vapp
 
     if [[ ${vapp} == "y" || ${vapp} == "yes" ]]; then
-      $(./apps_install $USER)
+      ./apps_install $USER
     fi
 
   }

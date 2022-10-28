@@ -6,7 +6,7 @@ function install_basic()
   {
     snap install chromium morgen onlyoffice-desktopeditors gimp dbeaver-ce
 
-    apt install -y yad sane sane-utils  xsane xsane-common xbacklight ufw udisks2 tmux simplescreenrecorder scrcpy openssh-server git git-flow ca-certificates curl gnupg lsb-release keepass2 scrcpy
+    apt install -y yad sane sane-utils xsane xsane-common xbacklight ufw udisks2 tmux simplescreenrecorder scrcpy openssh-server git git-flow ca-certificates curl gnupg lsb-release keepass2 scrcpy wget gpg apt-transport-https
   }
 
 function install_docker()
@@ -19,14 +19,12 @@ function install_docker()
     echo \
     "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
     $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
-
+    chmod a+r /etc/apt/keyrings/docker.gpg
     apt update && apt install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
   }
 
 function install_vscode()
-  {
-    apt install -y wget gpg apt-transport-https
-    
+  {    
     wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
     
     install -D -o root -g root -m 644 packages.microsoft.gpg /etc/apt/keyrings/packages.microsoft.gpg
@@ -40,8 +38,6 @@ function install_vscode()
 
 function install_brave()
   {
-    apt install -y apt-transport-https curl
-
     curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg
 
     echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main"|tee /etc/apt/sources.list.d/brave-browser-release.list
@@ -55,9 +51,7 @@ function install_signal()
     
     cat signal-desktop-keyring.gpg | tee -a /usr/share/keyrings/signal-desktop-keyring.gpg > /dev/null
     
-    echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/signal-desktop-keyring.gpg] https://updates.signal.org/desktop/apt xenial main' |\
-    
-    tee -a /etc/apt/sources.list.d/signal-xenial.list
+    echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/signal-desktop-keyring.gpg] https://updates.signal.org/desktop/apt xenial main' | tee -a /etc/apt/sources.list.d/signal-xenial.list
     
     apt update && apt install -y signal-desktop
   }
@@ -75,7 +69,7 @@ function install_otherApps()
     rm Telegram.tar.xz
 
     ## TOR
-    wget https://www.torproject.org/dist/torbrowser/11.5.4/tor-browser-linux64-11.5.4_it.tar.xz -O Tor.tar.xz
+    wget https://www.torproject.org/dist/torbrowser/11.5.6/tor-browser-linux64-11.5.6_it.tar.xz -O Tor.tar.xz
     tar -xvf Tor.tar.xz
     mv tor* Tor && mv Tor /home/$USER/Applications
     rm Tor.tar.xz
