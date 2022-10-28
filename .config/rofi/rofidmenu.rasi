@@ -3,7 +3,7 @@
  * Maintainer: joekamprad <joekamprad@endeavouros.com>
  *******************************************************/
 configuration {
-    font:				"Noto Sans Regular 10";
+    font:				"Montserrat Regular 10";
     show-icons:				true;
     icon-theme:				"Papirus-Dark";
     display-drun:			"Apps";
