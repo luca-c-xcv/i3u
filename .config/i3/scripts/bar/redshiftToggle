@@ -1,0 +1,20 @@
+#!/bin/bash
+
+
+_isopen=false
+function isOpen()
+  {
+    local rd=$(ps -aux | grep -w redshif | wc -l)
+
+    [[ $rd -eq 2 ]] && _isopen=true
+  }
+
+
+function toggle()
+  {
+    [[ _isopen ]] && pkill -USR1 redshift
+  }
+
+case $BLOCK_BUTTON in
+  1) toggle ;;
+esac
