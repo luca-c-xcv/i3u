@@ -165,8 +165,8 @@ function extras()
     _printMsg "installing extra components"
 		
     #creation dir for locally bin files 
-    LOCALBIN_PATH=/home/$USER/.local/bin
-    GLOBBIN_PATH=/usr/bin
+    local LOCALBIN_PATH=/home/$USER/.local/bin
+    local GLOBBIN_PATH=/usr/bin
     
     if [[ -d $LOCALBIN_PATH ]]; then
       rsync -av --progress --chown=$USER:$USER ./.local/bin/* $LOCALBIN_PATH/
@@ -248,7 +248,8 @@ function main()
     apt update
 		add_repos
 		install_packs
-
+    
+    _chooseSH
     if [[ $SHCHOSEN -eq 1 ]]; then
       install_BASH
     elif [[ $SHCHOSEN -eq 2 ]]; then
