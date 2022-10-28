@@ -4,3 +4,9 @@ num=$(xbacklight -get)
 int=${num%.*}
 
 echo "💡 $int"
+
+
+case $BLOCK_BUTTON in
+  4) xbacklight + 5 ;;
+  5) xbacklight - 5 ;;
+esac
