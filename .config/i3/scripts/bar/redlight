@@ -1,0 +1,91 @@
+#!/bin/bash
+
+
+isopenRS=false
+isHardware=false
+
+function changeSW()
+  {
+    local b=""
+    killall -q redshift > /dev/null
+
+    #while pgrep -x redshift > /dev/null; do sleep 1; done
+
+    if [[ -f /tmp/tmp.rs ]]; then
+      b=$(cat /tmp/tmp.rs)
+    else
+      b=70
+    fi
+
+
+    if [[ $1 == "up" && $b -lt 100 ]]; then
+      ((b+=5))
+    elif [[ $1 == "down" && $b -gt 10 ]]; then
+      ((b-=5))
+    elif [[ $1 == "reset" ]]; then
+      b=100
+    fi 
+
+    echo $b > /tmp/tmp.rs
+
+    b=$(awk "BEGIN { print $b/100 }")
+    
+    pkill -9 redshift > /dev/null
+    redshift -P -b $b &
+  }
+function changeHW()
+  {
+    case $1 in
+      "up")    xbacklight + 5 ;;
+      "down")  xbacklight - 5 ;;
+    esac
+  }
+
+
+function getSW()
+  {
+    if [[ -f /tmp/tmp.rs ]]; then
+      echo -e "$(cat /tmp/tmp.rs)"
+    else
+      echo -e "-1"
+    fi
+  }
+function getHW()
+  {
+    local num=$(xbacklight -get)
+    local int=${num%.*}
+
+    echo "$int"
+
+  }
+
+
+function isOpenRS()
+  {
+    local rs=$(ps -aux | grep -w redshif | wc -l)
+
+    [[ $rs -eq 2 ]] && isopen=true
+  }
+function toggle()
+  {
+    [[ isopenRS ]] && pkill -USR1 redshift
+  }
+
+
+
+[[ $(xbacklight -get) ]] && isHardware=true || isHardware=false
+light=""
+if [[ $isHardware == true ]]; then
+ light=$(getHW)
+else 
+ light=$(getSW)
+fi
+
+
+case $BLOCK_BUTTON in
+  1) toggle ;;
+  4) [[ $isHardware == true ]] && changeHW "up" || changeSW "up" ;;
+  5) [[ $isHardware == true ]] && changeHW "down" || changeSW "down" ;;
+esac
+
+echo -e "💡 $light"
