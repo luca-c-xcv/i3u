@@ -388,8 +388,8 @@ bindsym XF86AudioPlay exec --no-startup-id playerctl play-pause # toggle play-pa
 bindsym XF86AudioPause exec --no-startup-id playerctl play-pause # toggle play-pause
 bindsym XF86AudioNext exec --no-startup-id playerctl next # forward song
 bindsym XF86AudioPrev exec --no-startup-id playerctl previous # backward song
-# bindsym XF86MonBrightnessDown  # brighness down
-# bindsym XF86MonBrightnessUp  # brightness up
+bindsym XF86MonBrightnessDown  exec --no-startup-id ~/.config/i3/scripts/bar/redlight down # brighness down
+bindsym XF86MonBrightnessUp  exec --no-startup-id ~/.config/i3/scripts/bar/redlight up # brightness up
 
 
 ## extra shortcut

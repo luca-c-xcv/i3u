@@ -88,4 +88,9 @@ case $BLOCK_BUTTON in
   5) [[ $isHardware == true ]] && changeHW "down" || changeSW "down" ;;
 esac
 
+case $1 in
+  "up") [[ $isHardware == true ]] && changeHW "up" || changeSW "up" ;;
+  "down") [[ $isHardware == true ]] && changeHW "down" || changeSW "down" ;;
+esac
+
 echo -e "💡 $light"
