@@ -20,17 +20,23 @@ function setupwp()
 
 		# set new wallpaper
 		# gsettings set org.gnome.desktop.background picture-uri "file:///$FILE"
-		feh --bg-scale $FILE
+    err=$(feh --bg-scale $FILE 2>&1)
+    if [[ ! -z $err ]]; then
+        feh --bg-scale /usr/share/backgrounds/gnome/Road.jpg
+      fi
 	}
 
 
 function setupOLDwp()
 	{
 		if [[ -f $FILE ]]; then
-			feh --bg-scale $FILE
+			err=$(feh --bg-scale $FILE 2>&1)
+      if [[ ! -z $err ]]; then
+        feh --bg-scale /usr/share/backgrounds/gnome/Road.jpg
+      fi
 		else
 			feh --bg-scale /usr/share/backgrounds/gnome/Road.jpg
-		fi			
+		fi
 	}
 
 
