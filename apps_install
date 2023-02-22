@@ -69,7 +69,7 @@ function install_otherApps()
     rm Telegram.tar.xz
 
     ## TOR
-    wget https://www.torproject.org/dist/torbrowser/11.5.6/tor-browser-linux64-11.5.6_it.tar.xz -O Tor.tar.xz
+    wget https://www.torproject.org/dist/torbrowser/12.0.3/tor-browser-linux64-12.0.3_ALL.tar.xz -O Tor.tar.xz
     tar -xvf Tor.tar.xz
     mv tor* Tor && mv Tor /home/$USER/Applications
     rm Tor.tar.xz
