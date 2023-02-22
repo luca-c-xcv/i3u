@@ -49,7 +49,13 @@ oxygen-cursor-theme oxygen-cursor-theme-extra
 oxy-terra
 ```
 
+### Example of use
+
+![demo](extras/i3u.gif)
+
+
 ## [Shortcuts](shortcuts.md)
+
 
 #### Main shortcuts
 

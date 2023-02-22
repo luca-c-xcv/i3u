@@ -69,31 +69,31 @@ set_from_resource $ws17 i3-wm.workspace.17.name "17"
 set_from_resource $ws18 i3-wm.workspace.18.name "18"
 set_from_resource $ws19 i3-wm.workspace.19.name "19"
 
-set $monitorL "DVI-D-0"
-set $monitorR "HDMI-0"
+# set $monitorL "DVI-D-0"
+# set $monitorR "HDMI-0"
 
 
-workspace 1 output $monitorL
-workspace 3 output $monitorL
-workspace 5 output $monitorL
-workspace 7 output $monitorL
-workspace 9 output $monitorL
-workspace 11 output $monitorL
-workspace 13 output $monitorL
-workspace 15 output $monitorL
-workspace 17 output $monitorL
-workspace 19 output $monitorL
+# workspace 1 output $monitorL
+# workspace 3 output $monitorL
+# workspace 5 output $monitorL
+# workspace 7 output $monitorL
+# workspace 9 output $monitorL
+# workspace 11 output $monitorL
+# workspace 13 output $monitorL
+# workspace 15 output $monitorL
+# workspace 17 output $monitorL
+# workspace 19 output $monitorL
 
-workspace 2 output $monitorR
-workspace 4 output $monitorR
-workspace 6 output $monitorR
-workspace 8 output $monitorR
-workspace 10 output $monitorR
-workspace 12 output $monitorR
-workspace 14 output $monitorR
-workspace 16 output $monitorR
-workspace 18 output $monitorR
-workspace 20 output $monitorR
+# workspace 2 output $monitorR
+# workspace 4 output $monitorR
+# workspace 6 output $monitorR
+# workspace 8 output $monitorR
+# workspace 10 output $monitorR
+# workspace 12 output $monitorR
+# workspace 14 output $monitorR
+# workspace 16 output $monitorR
+# workspace 18 output $monitorR
+# workspace 20 output $monitorR
 
 ###############################################################################
 # Workspace Keys
@@ -120,6 +120,9 @@ bindsym $super+Return exec /usr/bin/x-terminal-emulator
 
 ## Launch // Browser // <>b ##
 bindsym $super+b exec gtk-launch $(xdg-settings get default-web-browser)
+
+## Launch // Browser selector // <><Shift>b ##
+bindsym $super+Shift+b exec ~/.config/i3/scripts/ui/browser_selector
 
 ## Launch // Application // <> Space ##
 bindsym $super+space exec rofi -modi drun -show drun -config ~/.config/rofi/rofidmenu.rasi
@@ -388,8 +391,8 @@ bindsym XF86AudioPlay exec --no-startup-id playerctl play-pause # toggle play-pa
 bindsym XF86AudioPause exec --no-startup-id playerctl play-pause # toggle play-pause
 bindsym XF86AudioNext exec --no-startup-id playerctl next # forward song
 bindsym XF86AudioPrev exec --no-startup-id playerctl previous # backward song
-bindsym XF86MonBrightnessDown  exec --no-startup-id ~/.config/i3/scripts/bar/redlight down # brighness down
-bindsym XF86MonBrightnessUp  exec --no-startup-id ~/.config/i3/scripts/bar/redlight up # brightness up
+bindsym XF86MonBrightnessDown  exec --no-startup-id ~/.config/i3/scripts/bar/redlight2 down # brighness down
+bindsym XF86MonBrightnessUp  exec --no-startup-id ~/.config/i3/scripts/bar/redlight2 up # brightness up
 
 
 ## extra shortcut
@@ -560,7 +563,7 @@ exec --no-startup-id /usr/bin/nm-applet
 exec --no-startup-id /usr/bin/blueman-applet
 
 # load picom
-exec --no-startup-id /usr/bin/picom --config ~/.config/picom/config
+# exec --no-startup-id /usr/bin/picom --config ~/.config/picom/config
 
 # set lockscreen & screensaver
 exec "xautolock -detectsleep -time 5 -locker \"i3lock-fancy\"" #lock

@@ -1,0 +1,18 @@
+#!/bin/bash
+
+
+yad --title="Profile Selector" --center --width=200 --height=100\
+    --window-icon=""\
+    --text="\n<b><big>Select the browser:</big></b>" --text-align=center\
+    --button="<b>Brave</b>:1" --button="<b>Chromium</b>:2" --button="<b>Firefox</b>:3" --button="<b>Tor</b>:4" --button="<u>Cancel</u>:0" --buttons-layout=center
+
+    
+
+
+case "$?" in
+    0) exit 1;;
+    1) brave-browser &;;
+    2) chromium &;;
+    3) firefox -P &;;
+    4) cd $HOME/Applications/TorBrowser; ./start-tor-browser.desktop &;;
+esac
