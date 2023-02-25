@@ -505,7 +505,7 @@ set $yellow         #fff768
 set $yellowbrown		#f7d26b
 
 # Sets i3 font for dialogs
-font pango: Noto Sans Regular 8
+font pango: Montserrat Regular 8
 
 # Window Border color
 # class									border				background				text						indicator			child_border

@@ -11,13 +11,13 @@ NC='\033[0m'
 
 function _waiting()
   {
-    echo -e "${CYAN}..." && sleep 1 && echo -e "...${NC}" && sleep 1
+    echo -e "${CYAN}..." && sleep 1 && echo -e "...${NC}\n" && sleep 1
   }
 
 
 function _printMsg()
   {
-    echo -e "${CYAN}$1${NC}\n"
+    echo -e "\n${CYAN}$1${NC}\n"
   }
 
 
@@ -175,6 +175,8 @@ function extras()
     fi
 
 		rsync -av --progress ./extras/openlayout ./extras/savelayout ./extras/unclutter $GLOBBIN_PATH && _waiting
+
+    rsync -av --prgress ./extras/Car.jpg /usr/share/backgrounds/gnome/
     
 		chmod -R 755 $LOCALBIN_PATH/*
 		chmod 755 $GLOBBIN_PATH/openlayout
@@ -273,7 +275,11 @@ if [[ "$EUID" = 0 && $# -eq 1 ]]; then
 		help
 		exit 0
 	else
-    main
+    if id "$USER" &>/dev/null; then
+      main
+    else
+      echo -e "User $USER unknown\n"
+    fi
 	fi
 else
 	echo -e "You must run the script with root privileges"

@@ -105,7 +105,11 @@ if [[ "$EUID" = 0 ]]; then
     help
     exit 0
   else
-    main
+    if id "$USER" &>/dev/null; then
+      main
+    else
+      echo -e "User $USER unknown\n"
+    fi
   fi
 else
 	echo -e "You must run the script with root privileges"
