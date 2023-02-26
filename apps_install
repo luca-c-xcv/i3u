@@ -6,7 +6,7 @@ function install_basic()
   {
     snap install chromium morgen onlyoffice-desktopeditors gimp dbeaver-ce
 
-    apt install -y yad sane sane-utils xsane xsane-common xbacklight ufw udisks2 tmux simplescreenrecorder scrcpy openssh-server git git-flow ca-certificates curl gnupg lsb-release keepass2 scrcpy wget gpg apt-transport-https
+    apt install -y yad sane sane-utils xsane xsane-common xbacklight ufw udisks2 tmux simplescreenrecorder scrcpy openssh-server git git-flow ca-certificates curl gnupg lsb-release keepass2 wget gpg apt-transport-https baobab bleachbit zathura htop flatpak
   }
 
 function install_docker()

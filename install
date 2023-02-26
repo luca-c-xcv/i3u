@@ -106,7 +106,7 @@ function install_packs( )
 
 		#install features
     _printMsg "installing extra tools"
-		apt update && apt install -y feh fortune fonts-font-awesome fonts-jetbrains-mono papirus-folders papirus-icon-theme oxygen-cursor-theme oxygen-cursor-theme-extra nemo cowsay bluez bluez-tools blueman yad playerctl pulseaudio-utils xautolock redshift diodon picom
+		apt update && apt install -y feh fonts-font-awesome fonts-jetbrains-mono papirus-folders papirus-icon-theme oxygen-cursor-theme oxygen-cursor-theme-extra nemo bluez bluez-tools blueman yad playerctl pulseaudio-utils xautolock redshift diodon picom
     _printMsg "extras installed"
 	}
 
