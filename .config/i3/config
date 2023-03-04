@@ -382,6 +382,7 @@ bindsym $super+Shift+v exec /usr/bin/diodon
 
 ## volume keybinding
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle # mute
+bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle #mic mute
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +2% # raising
 bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -2% # lowering
 
@@ -416,6 +417,12 @@ for_window [class="floating_window"] floating enable
 for_window [class="Blueman-manager"] floating enable
 for_window [class="Gnome-control-center"] floating enable
 for_window [class="Gnome-calculator"] floating enable
+# for_window [class=Chromium] border pixel 1
+# for_window [class=Brave] border pixel 1
+# for_window [title=Brave] border pixel 1
+for_window [class=KeePass2] floating enable
+
+
 
 workspace_auto_back_and_forth no
 
@@ -466,10 +473,10 @@ bindsym $super+r mode "Resize Mode"
 ###############################################################################
 # i3 Appearance and Behavior
 ###############################################################################
-
 # Disable titlebar
+for_window [class="^.*"] border pixel 1
 title_align center
-default_border pixel 1
+default_border none
 default_floating_border pixel 1
 
 # Specify the distance between windows in pixels. (i3-gaps)

@@ -14,7 +14,7 @@ packages="$(dpkg -l | wc -l)"
 shell="$(basename "${SHELL}")"
 battery="$(acpi | awk '{print $4}' | cut -d ',' -f1) ($(acpi | awk '{print $5}' | cut -d ',' -f1 | cut -d':' -f1-2)) [$(acpi | awk '{print $3}' | cut -d ',' -f1)]"
 memory="$(free -h | sed -n 2p | awk '{print$3}') / $(free -h | sed -n 2p | awk '{print$2}')"
-localip="$(hostname -i | awk '{print $1}')"
+localip="$(hostname -I | awk '{print $1}')"
 publicip="$(dig @resolver4.opendns.com myip.opendns.com +short -4)"
 cpu="$(cat /proc/cpuinfo | grep 'model name' | head -1 | cut -d':' -f2)"
 

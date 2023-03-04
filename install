@@ -106,7 +106,7 @@ function install_packs( )
 
 		#install features
     _printMsg "installing extra tools"
-		apt update && apt install -y feh fonts-font-awesome fonts-jetbrains-mono papirus-folders papirus-icon-theme oxygen-cursor-theme oxygen-cursor-theme-extra nemo bluez bluez-tools blueman yad playerctl pulseaudio-utils xautolock redshift diodon picom
+		apt update && apt install -y feh fonts-font-awesome fonts-jetbrains-mono papirus-folders papirus-icon-theme oxygen-cursor-theme oxygen-cursor-theme-extra nemo bluez bluez-tools blueman yad playerctl pulseaudio-utils xautolock redshift diodon picom xdotool
     _printMsg "extras installed"
 	}
 
@@ -174,7 +174,10 @@ function extras()
       rsync -av --progress --chown=$USER:$USER ./.local/bin /home/$USER/.local
     fi
 
-		rsync -av --progress ./extras/openlayout ./extras/savelayout ./extras/unclutter $GLOBBIN_PATH && _waiting
+	rsync -av --progress ./extras/openlayout ./extras/savelayout ./extras/unclutter $GLOBBIN_PATH && _waiting
+
+	rsync -av --progress ./extras/20-intel.conf /etc/X11/xorg.conf.d/
+	rsync -av --progress ./extras/30-mouse.conf /etc/X11/xorg.conf.d/
 
     rsync -av --prgress ./extras/Car.jpg /usr/share/backgrounds/gnome/
     

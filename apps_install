@@ -6,7 +6,7 @@ function install_basic()
   {
     snap install chromium morgen onlyoffice-desktopeditors gimp dbeaver-ce
 
-    apt install -y yad sane sane-utils xsane xsane-common xbacklight ufw udisks2 tmux simplescreenrecorder scrcpy openssh-server git git-flow ca-certificates curl gnupg lsb-release keepass2 wget gpg apt-transport-https baobab bleachbit zathura htop flatpak
+    apt install -y yad sane sane-utils xsane xsane-common xbacklight ufw udisks2 tmux simplescreenrecorder scrcpy openssh-server git git-flow ca-certificates curl gnupg lsb-release keepass2 wget gpg apt-transport-https baobab bleachbit zathura htop flatpak arandr net-tools mono-complete
   }
 
 function install_docker()
@@ -77,6 +77,7 @@ function install_otherApps()
     ## GMAIL
     wget https://github.com/timche/gmail-desktop/releases/download/v2.25.3/gmail-desktop-2.25.3-linux.AppImage -O gmail.AppImage
     mv gmail.AppImage /home/$USER/Applications
+
   }
 
 

@@ -1,0 +1,31 @@
+#!/bin/bash
+
+# brief: mount a specific external drive automatically in its directory: it needs drive label and fstab updated with this drive
+
+icon=/usr/share/icons/Papirus/22x22/devices/drive-removable-media-usb-pendrive.svg
+erricon=/usr/share/icons/Papirus/22x22/actions/dialog-error.svg
+
+exists=$(lsblk -o LABEL | grep -w "espace" | awk '{print $1}')
+mounted=$(lsblk -o MOUNTPOINT | grep -w "espace" | awk '{print $1}')
+
+if [[ $mounted == "/mnt/espace" ]]; then
+  ack=$(umount /mnt/espace 2>&1)
+  if [[ $ack ]]; then
+    msg=$(echo $ack | awk '{print $2, $5}' | cut -d":" -f2)
+    notify-send -u low -i $erricon "espace" "Device Not Unmounted: <b>${msg^^}</b>"
+  else
+    notify-send -u low -i $icon "espace" "Device Unmounted"
+  fi
+else
+  if [[ $exists ]]; then
+    ack=$(mount /mnt/espace 2>&1)
+    if [[ $ack ]]; then
+      notify-send -u low -i $erricon "espace" "Device Not mounted:<br/> <b>$msg</b>"
+    else
+      notify-send -u low -i $icon "espace" "Device Mounted"
+    fi
+  else
+    notify-send -u low -i $erricon "espace" "Device Not plugged"
+  fi
+fi
+
