@@ -3,9 +3,9 @@
 bright=$(cat /sys/class/leds/tpacpi::kbd_backlight/brightness)
 
 if [[ $bright -eq 0 ]]; then
-  echo "<span color='#ffffff'>! ⌨</span>"
+  echo "<span color='#636a83'>⌨</span>"
 elif [[ $bright -eq 1 ]]; then
-  echo "<span color='#7891ff'>⌨</span>"
+  echo "<span color='#FDD023'>⌨</span>"
 elif [[ $bright -eq 2 ]]; then
   echo "<span color='#ffffff'>⌨</span>"
 fi

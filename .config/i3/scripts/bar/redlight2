@@ -163,7 +163,7 @@ function main()
       "down") changeBRIGHTNESS "down" ;;
     esac
 
-    echo -e "💡 $brightness"
+    echo -e "  $brightness"
   }
 
 ## ------------------------------------------------------------------------- ##
