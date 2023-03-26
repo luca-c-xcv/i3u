@@ -1,6 +1,38 @@
-#!/bin/sh
+#!/bin/bash
 #
 # ufetch-ubuntu - tiny system info for ubuntu
+
+## USEFUL FUNCTIONS
+
+function getLocalIP()
+	{
+		DEVS=($(nmcli device | grep -w 'connected' | awk '{print $1}'))
+		TYPES=($(nmcli device | grep -w 'connected' | awk '{print $2}'))
+		
+		eth=0
+		myip='$(hostname -i)'
+		for type in "${TYPES[@]}"
+		do
+			if [[ "$type" == "ethernet" ]]; then
+				eth=1
+				myip=$(ifconfig "${DEVS[$type]}" | grep -w "inet" | awk '{print $2}')
+			fi
+		done
+		
+		
+		
+		for type in "${TYPES[@]}"
+		do
+			if [[ "$type" == "wifi" ]] && [[ $eth -ne 1 ]]; then
+			  myip=$(ifconfig "${DEVS[$type]}" | grep -w "inet" | awk '{print $2}')
+			fi
+		done
+		
+		
+		echo $myip
+	}
+
+
 
 ## INFO
 
@@ -14,7 +46,7 @@ packages="$(dpkg -l | wc -l)"
 shell="$(basename "${SHELL}")"
 battery="$(acpi | awk '{print $4}' | cut -d ',' -f1) ($(acpi | awk '{print $5}' | cut -d ',' -f1 | cut -d':' -f1-2)) [$(acpi | awk '{print $3}' | cut -d ',' -f1)]"
 memory="$(free -h | sed -n 2p | awk '{print$3}') / $(free -h | sed -n 2p | awk '{print$2}')"
-localip="$(hostname -I | awk '{print $1}')"
+localip="$(getLocalIP)"
 publicip="$(dig @resolver4.opendns.com myip.opendns.com +short -4)"
 cpu="$(cat /proc/cpuinfo | grep 'model name' | head -1 | cut -d':' -f2)"
 

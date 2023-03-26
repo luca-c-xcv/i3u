@@ -398,7 +398,7 @@ bindsym XF86MonBrightnessUp  exec --no-startup-id ~/.config/i3/scripts/bar/redli
 
 ## extra shortcut
 bindsym $super+Shift+Return exec /usr/bin/code
-bindsym $super+Shift+l exec ~/.config/i3/scripts/openlayout_shortcut
+bindsym $super+Shift+l exec ~/.config/i3/scripts/ui/openlayout_shortcut
 bindsym $super+Shift+m exec ~/.local/bin/espace
 
 
@@ -573,7 +573,7 @@ exec --no-startup-id /usr/bin/blueman-applet
 # exec --no-startup-id /usr/bin/picom --config ~/.config/picom/config
 
 # set lockscreen & screensaver
-exec "xautolock -detectsleep -time 5 -locker \"i3lock-fancy\"" #lock
+# exec "xautolock -detectsleep -time 5 -locker \"~/.config/i3/scripts/ui/lock\"" #lock
 exec "xset s 300; xset s blank" #screensaver
 
 ## startup applications
