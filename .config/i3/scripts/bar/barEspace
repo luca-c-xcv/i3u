@@ -1,0 +1,7 @@
+#!/bin/bash
+
+com=$(df -h | grep espace)
+
+if [[ ! -z "$com" ]]; then
+  echo ""
+fi
