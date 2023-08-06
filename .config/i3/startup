@@ -3,3 +3,5 @@
 ~/.local/bin/feh_cw &
 
 /usr/bin/redshift &
+
+/usr/bin/diodon &

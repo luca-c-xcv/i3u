@@ -3,9 +3,10 @@
 isHW=false # light controller is HW
 isOpen_rs=false # redshit is opened
 DEFAULT_B=70 # default brightness
-BIG_STEP=5 # distance between percentages high brightness
-FINE_STEP=2 # distance between small brightness
-MICRO_STEP=1 # distance between smallest brightness
+BIG_STEP=10 # distance between percentages high brightness
+FINE_STEP=5 # distance between small brightness
+MICRO_STEP=2 # distance between smallest brightness
+NANO_STEP=1 # distance between smallest brightness
 
 # function to set global variable `isHW` to true if there is an output from `xbacklight`
 function isHardware()
@@ -113,9 +114,11 @@ function changeHW()
   	local b=$(getHW)
     local step=$BIG_STEP
 
-  	if [[ b -le 4 ]]; then
+	if [[ b -le 5 ]]; then
+		step=$NANO_STEP
+  	elif [[ b -le 10 ]]; then
   		step=$MICRO_STEP
-  	elif [[ l -le 5 ]]; then
+  	elif [[ b -le 15 ]]; then
       step=$FINE_STEP
     fi
 

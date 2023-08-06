@@ -69,31 +69,34 @@ set_from_resource $ws17 i3-wm.workspace.17.name "17"
 set_from_resource $ws18 i3-wm.workspace.18.name "18"
 set_from_resource $ws19 i3-wm.workspace.19.name "19"
 
-# set $monitorL "DVI-D-0"
-# set $monitorR "HDMI-0"
+set $internal "eDP1"
+set $external "HDMI2"
+set $dockC "DVI-I-1-1"
+set $dockR "DVI-I-2-2"
+set $hubC "DP1-1"
+set $hubL "DP1-2"
 
+ workspace 1 output $dockC $hubL $external $internal 
+ workspace 3 output $dockC $hubL $external $internal
+ workspace 5 output $dockC $hubL $external $internal
+ workspace 7 output $dockC $hubL $external $internal
+ workspace 9 output $dockC $hubL $external $internal
+ workspace 11 output $external $internal 
+ workspace 13 output $external $internal
+ workspace 15 output $external $internal
+ workspace 17 output $external $internal
+ workspace 19 output $external $internal 
 
-# workspace 1 output $monitorL
-# workspace 3 output $monitorL
-# workspace 5 output $monitorL
-# workspace 7 output $monitorL
-# workspace 9 output $monitorL
-# workspace 11 output $monitorL
-# workspace 13 output $monitorL
-# workspace 15 output $monitorL
-# workspace 17 output $monitorL
-# workspace 19 output $monitorL
-
-# workspace 2 output $monitorR
-# workspace 4 output $monitorR
-# workspace 6 output $monitorR
-# workspace 8 output $monitorR
-# workspace 10 output $monitorR
-# workspace 12 output $monitorR
-# workspace 14 output $monitorR
-# workspace 16 output $monitorR
-# workspace 18 output $monitorR
-# workspace 20 output $monitorR
+ workspace 2 output $dockR $hubC$internal
+ workspace 4 output $dockR $hubC$internal
+ workspace 6 output $dockR $hubC$internal
+ workspace 8 output $dockR $hubC$internal
+ workspace 10 output $dockR $hubC $internal
+ workspace 12 output $internal
+ workspace 14 output $internal
+ workspace 16 output $internal
+ workspace 18 output $internal
+ workspace 20 output $internal
 
 ###############################################################################
 # Workspace Keys
@@ -120,6 +123,7 @@ bindsym $super+Return exec /usr/bin/x-terminal-emulator
 
 ## Launch // Browser // <>b ##
 bindsym $super+b exec gtk-launch $(xdg-settings get default-web-browser)
+# bindsym $super+b exec brave-browser 127.0.0.1
 
 ## Launch // Browser selector // <><Shift>b ##
 bindsym $super+Shift+b exec ~/.config/i3/scripts/ui/browser_selector
@@ -417,6 +421,7 @@ for_window [class="floating_window"] floating enable
 for_window [class="Blueman-manager"] floating enable
 for_window [class="Gnome-control-center"] floating enable
 for_window [class="Gnome-calculator"] floating enable
+for_window [class="Pavucontrol"] floating enable
 # for_window [class=Chromium] border pixel 1
 # for_window [class=Brave] border pixel 1
 # for_window [title=Brave] border pixel 1
@@ -480,8 +485,8 @@ default_border none
 default_floating_border pixel 1
 
 # Specify the distance between windows in pixels. (i3-gaps)
-gaps inner 10
-gaps outer 12
+gaps inner 6
+gaps outer 6
 
 # Only enable gaps on a workspace when there is at least one container
 #smart_gaps on
