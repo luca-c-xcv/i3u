@@ -1,26 +1,32 @@
 #!/bin/bash
 
+#######################
 ### :: VARIABLES :: ###
+#######################
 USER=$1
 SHCHOSEN=''
 RED='\033[0;31m'
 CYAN='\033[0;36m'
 NC='\033[0m'
 
-### :: FUNCTIONS :: ###
+###############################
+### :: UTILITY FUNCTIONS :: ###
+###############################
 
+## wait one second to continue next steps to help the system to complete the installations
 function _waiting()
   {
     echo -e "${CYAN}..." && sleep 1 && echo -e "...${NC}\n" && sleep 1
   }
 
-
+## print in STOUT the function argument as message
+## used to print the progress status 
 function _printMsg()
   {
     echo -e "\n${CYAN}$1${NC}\n"
   }
 
-
+## function to choice the shell version
 function _chooseSH()
   {
     echo -e "${RED}Type selection number for alternative shell${NC}"
@@ -29,23 +35,32 @@ function _chooseSH()
     read -p "Choose a number " SHCHOSEN
   }
 
+##################################
+### :: INSTALLING FUNCTIONS :: ###
+##################################
 
-## add required repos
+## adding required repos
 function add_repos( )
 	{
     _printMsg "adding new repos..."
-		wget -qO - https://regolith-desktop.org/regolith.key | gpg --dearmor | tee /usr/share/keyrings/regolith-archive-keyring.gpg > /dev/null && _waiting
-    echo deb "[arch=amd64 signed-by=/usr/share/keyrings/regolith-archive-keyring.gpg] https://regolith-desktop.org/release-ubuntu-jammy-amd64 jammy main" | tee /etc/apt/sources.list.d/regolith.list
+
+    ## adding official i3 repo
+		/usr/lib/apt/apt-helper download-file https://debian.sur5r.net/i3/pool/main/s/sur5r-keyring/sur5r-keyring_2023.02.18_all.deb keyring.deb SHA256:a511ac5f10cd811f8a4ca44d665f2fa1add7a9f09bef238cdfad8461f5239cc4
+    apt install ./keyring.deb
+    echo "deb http://debian.sur5r.net/i3/ $(grep '^DISTRIB_CODENAME=' /etc/lsb-release | cut -f2 -d=) universe" | tee /etc/apt/sources.list.d/sur5r-i3.list
+    ## adding papirus repo
 		add-apt-repository -y ppa:papirus/papirus && apt update && _waiting
+    ## adding diodon repo
     add-apt-repository -y ppa:diodon-team/stable && apt update
+
     _printMsg "repos added"
 	}
 
-
-## install zsh
+## installing zsh
 function install_ZSH()
 	{
     _printMsg "installing ZSH..."
+
 		apt update && apt install -y zsh && _waiting
 		chsh -s /bin/zsh $USER
 		wget -O /tmp/zsh_install.sh https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh
@@ -65,10 +80,12 @@ function install_ZSH()
 
     _printMsg "ZSH installed"
 	}
+
 ## install bash
 function install_BASH()
   {
     _printMsg "installing BASH..."
+
 		chsh -s /bin/bash $USER
 		wget -O /tmp/bash_install.sh https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh
 		chmod +x /tmp/bash_install.sh
@@ -86,80 +103,96 @@ function install_BASH()
       rsync -av --progress --chown=$USER:$USER ./.bash_aliases /home/$USER/.bash_aliases
     fi
 
-
     _printMsg "BASH installed"
   }
 
-
-## install required packages
+## installing required packages
 function install_packs( )
 	{
-		#install essentials
+		## installing essentials
     _printMsg "installing essential tools"
+
 		apt update && apt install -y make git jq curl wget ffmpeg terminator pavucontrol mlocate && _waiting
+    
     _printMsg "essentials installed"
 
 		#install i3 & plugins
     _printMsg "installing i3wm environment"
-		apt update && apt install -y i3-gaps i3blocks i3lock i3lock-fancy dunst suckless-tools rofi && _waiting
+
+		apt update && apt install -y i3 i3blocks i3lock i3lock-fancy dunst suckless-tools rofi && _waiting
+
     _printMsg "i3 installed"
 
 		#install features
     _printMsg "installing extra tools"
+
 		apt update && apt install -y feh fonts-font-awesome fonts-jetbrains-mono papirus-folders papirus-icon-theme oxygen-cursor-theme oxygen-cursor-theme-extra nemo bluez bluez-tools blueman yad playerctl pulseaudio-utils xautolock redshift diodon picom xdotool
+    
     _printMsg "extras installed"
 	}
 
 
-## copy themes
+## copuing themes
 function themes()
 	{
     _printMsg "installing themes"
+
 		rsync -av --progress themes/* /usr/share/themes/ && _waiting
+    
     _printMsg "themes installed"
 	}
 
 
-## setup icons
+## setuping icons
 function icon()
 	{
     _printMsg "installing icons"
-		papirus-folders -C adwaita --theme Papirus-Dark && _waiting
+	
+  	papirus-folders -C adwaita --theme Papirus-Dark && _waiting
+  
     _printMsg "icons installed"
 	}
 
 	
-## setup cursor
+## setuping cursor
 function cursor()
 	{
     _printMsg "installing cursors"
+
 		update-alternatives --set x-cursor-theme /etc/X11/cursors/oxy-terra.theme && _waiting
+    ## add gnome changes
+
     _printMsg "cursors installed"
 	}
 
 
-## copy fonts
+## copying fonts
 function fonts()
 	{
     _printMsg "installing fonts"
+
 		mkdir -p /home/$USER/.local/share/fonts/customFonts
 		rsync -av --progress --chown=$USER:$USER ./fonts/Montserrat /home/$USER/.local/share/fonts/customFonts/ && _waiting
 		fc-cache -f -v && _waiting
+    
     _printMsg "fonts installed"
 	}
 
 
-## copy configuration files and them correleted settings
+## copying configuration files and them correleted settings
 function copy_conf()
 	{
     _printMsg "copying configs"
+
 		rsync -av --progress --chown=$USER:$USER .config/* /home/$USER/.config/ && _waiting
-    chmod -R 755 /home/$USER/.config/i3/startup /home/$USER/.config/i3/scripts
+    chmod -R 755 /home/$USER/.config/i3/startup 
+    chmod -R 755 /home/$USER/.config/i3/scripts/*
+    
     _printMsg "configs copied"
 	}
 
 
-## install extra tools
+## installing2 extra tools
 function extras()
 	{
     _printMsg "installing extra components"
@@ -169,26 +202,22 @@ function extras()
     local GLOBBIN_PATH=/usr/bin
     
     if [[ -d $LOCALBIN_PATH ]]; then
-      rsync -av --progress --chown=$USER:$USER ./.local/bin/* $LOCALBIN_PATH/
+      ## folder already exists
+      rsync -av --progress --chown=$USER:$USER --chmod=D2755,F755 ./.local/bin/* $LOCALBIN_PATH/ 
     else
-      rsync -av --progress --chown=$USER:$USER ./.local/bin /home/$USER/.local
+      ## folder not exists
+      rsync -av --progress --chown=$USER:$USER --chmod=D2755,F755 ./.local/bin /home/$USER/.local
     fi
 
-	rsync -av --progress ./extras/openlayout ./extras/savelayout ./extras/unclutter $GLOBBIN_PATH && _waiting
-
-	rsync -av --progress ./extras/20-intel.conf /etc/X11/xorg.conf.d/
-	rsync -av --progress ./extras/30-mouse.conf /etc/X11/xorg.conf.d/
-
+	  rsync -av --progress ./extras/20-intel.conf /etc/X11/xorg.conf.d/
+	  rsync -av --progress ./extras/30-mouse.conf /etc/X11/xorg.conf.d/
     rsync -av --prgress ./extras/Car.jpg /usr/share/backgrounds/gnome/
     
-		chmod -R 755 $LOCALBIN_PATH/*
-		chmod 755 $GLOBBIN_PATH/openlayout
-		chmod 755 $GLOBBIN_PATH/savelayout
-		chmod 755 $GLOBBIN_PATH/unclutter
 
 		# install micro editore
 		curl https://getmic.ro | bash && _waiting
 		mv micro /usr/bin/
+
     _printMsg "components added"
 	}
 
@@ -247,6 +276,9 @@ d::::::ddddd::::::ddo:::::ooooo:::::o  n::::n    n::::ne::::::::e
 "
 	}
 
+##################
+### :: MAIN :: ###
+##################
 
 function main()
   {
@@ -270,8 +302,6 @@ function main()
     apps
 		finish
   }
-
-### :: MAIN :: ##
 
 if [[ "$EUID" = 0 && $# -eq 1 ]]; then
 	if [[ $1 == "-h" ]]; then

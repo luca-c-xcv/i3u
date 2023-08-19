@@ -1,10 +1,17 @@
 #!/bin/bash
 
+#######################
+### :: VARIABLES :: ###
+#######################
+
 USER=$1
 
+#######################
+### :: FUNCTIONS :: ###
+#######################
 function install_basic()
   {
-    snap install chromium morgen onlyoffice-desktopeditors gimp dbeaver-ce
+    snap install chromium morgen gimp dbeaver-ce
 
     apt install -y yad sane sane-utils xsane xsane-common xbacklight ufw udisks2 tmux gnome-screenshot simplescreenrecorder scrcpy openssh-server git git-flow ca-certificates curl gnupg lsb-release keepass2 wget gpg apt-transport-https baobab bleachbit zathura htop flatpak arandr net-tools mono-complete
   }
@@ -62,7 +69,7 @@ function install_otherApps()
       mkdir -p /home/$USER/Applications
     fi
 
-    ## TELEGRAM
+    ## Telegram
     wget https://telegram.org/dl/desktop/linux -O Telegram.tar.xz
     tar -xvf Telegram.tar.xz
     mv Telegram /home/$USER/Applications
@@ -74,13 +81,24 @@ function install_otherApps()
     mv tor* Tor && mv Tor /home/$USER/Applications
     rm Tor.tar.xz
 
-    ## GMAIL
+    ## Gmail
     wget https://github.com/timche/gmail-desktop/releases/download/v2.25.3/gmail-desktop-2.25.3-linux.AppImage -O gmail.AppImage
+    chmod 755 gmail.AppImage
     mv gmail.AppImage /home/$USER/Applications
 
-    # speedtest
+    ## speedtest
     curl -s https://packagecloud.io/install/repositories/ookla/speedtest-cli/script.deb.sh | bash
     apt-get install speedtest
+
+    ## LibreOffice 
+    wget https://appimages.libreitalia.org/LibreOffice-still.standard-x86_64.AppImage -O libreoffice.AppImage
+    chmod 755 libreoffice.AppImage
+    mv libreoffice.AppImage /home/$USER/Applications
+
+    ## OnlyOffice
+    wget https://download.onlyoffice.com/install/desktop/editors/linux/DesktopEditors-x86_64.AppImage -O onlyoffice.AppImage
+    chmod 755 onlyoffice.AppImage
+    mv onlyoffice.AppImage /home/$USER/Applications
   }
 
 

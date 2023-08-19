@@ -1,13 +1,14 @@
 [global_config]
   window_state = maximise
   inactive_color_offset = 0.79012345679
+  suppress_multiple_term_dialog = True
 [keybindings]
-  split_horiz = <Primary>h
-  split_vert = <Primary>v
+  split_horiz = <Primary><Alt>h
+  split_vert = <Primary><Alt>v
 [profiles]
   [[default]]
     icon_bell = False
-    background_color = "#0b0b0b"
+    background_color = "#1f212f"
     background_darkness = 0.95
     background_type = transparent
     backspace_binding = automatic
@@ -16,6 +17,7 @@
     font = JetBrains Mono 11
     foreground_color = "#ffffff"
     show_titlebar = False
+    scrollbar_position = hidden
     scrollback_infinite = True
     palette = "#000000:#cc0000:#4e9a06:#c4a000:#3465a4:#75507b:#06989a:#d3d7cf:#555753:#ef2929:#8ae234:#fce94f:#729fcf:#ad7fa8:#34e2e2:#eeeeec"
     use_system_font = False
