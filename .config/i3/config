@@ -180,15 +180,15 @@ bindsym $super+$ws8_key workspace number $ws8
 bindsym $super+$ws9_key workspace number $ws9
 bindsym $super+$ws10_key workspace number $ws10
 ## Navigate // Workspace 11 - 19 // <><Ctrl> 1..9 ##
-bindsym $super+Ctrl+$ws1_key workspace number $ws11
-bindsym $super+Ctrl+$ws2_key workspace number $ws12
-bindsym $super+Ctrl+$ws3_key workspace number $ws13
-bindsym $super+Ctrl+$ws4_key workspace number $ws14
-bindsym $super+Ctrl+$ws5_key workspace number $ws15
-bindsym $super+Ctrl+$ws6_key workspace number $ws16
-bindsym $super+Ctrl+$ws7_key workspace number $ws17
-bindsym $super+Ctrl+$ws8_key workspace number $ws18
-bindsym $super+Ctrl+$ws9_key workspace number $ws19
+bindsym $super+F1 workspace number $ws11
+bindsym $super+F2 workspace number $ws12
+bindsym $super+F3 workspace number $ws13
+bindsym $super+F4 workspace number $ws14
+bindsym $super+F5 workspace number $ws15
+bindsym $super+F6 workspace number $ws16
+bindsym $super+F7 workspace number $ws17
+bindsym $super+F8 workspace number $ws18
+bindsym $super+F9 workspace number $ws19
 
 ## Navigate // Next Workspace // <> Tab ##
 bindsym $super+Tab workspace next
@@ -282,15 +282,15 @@ bindsym $super+Shift+$ws8_key move container to workspace number $ws8
 bindsym $super+Shift+$ws9_key move container to workspace number $ws9
 bindsym $super+Shift+$ws10_key move container to workspace number $ws10
 ## Modify // Move Window to Workspace 11 - 19// <><Ctrl><Shift> 1..9 ##
-bindsym $super+Shift+Ctrl+$ws1_key move container to workspace number $ws11
-bindsym $super+Shift+Ctrl+$ws2_key move container to workspace number $ws12
-bindsym $super+Shift+Ctrl+$ws3_key move container to workspace number $ws13
-bindsym $super+Shift+Ctrl+$ws4_key move container to workspace number $ws14
-bindsym $super+Shift+Ctrl+$ws5_key move container to workspace number $ws15
-bindsym $super+Shift+Ctrl+$ws6_key move container to workspace number $ws16
-bindsym $super+Shift+Ctrl+$ws7_key move container to workspace number $ws17
-bindsym $super+Shift+Ctrl+$ws8_key move container to workspace number $ws18
-bindsym $super+Shift+Ctrl+$ws9_key move container to workspace number $ws19
+bindsym $super+Shift+F1 move container to workspace number $ws11
+bindsym $super+Shift+F2 move container to workspace number $ws12
+bindsym $super+Shift+F3 move container to workspace number $ws13
+bindsym $super+Shift+F4 move container to workspace number $ws14
+bindsym $super+Shift+F5 move container to workspace number $ws15
+bindsym $super+Shift+F6 move container to workspace number $ws16
+bindsym $super+Shift+F7 move container to workspace number $ws17
+bindsym $super+Shift+F8 move container to workspace number $ws18
+bindsym $super+Shift+F9 move container to workspace number $ws19
 
 
 # move focused container to workspace, move to workspace
@@ -516,15 +516,19 @@ set $mediumgrey			#8b8b8b
 set $yellow         #fff768
 set $yellowbrown		#f7d26b
 
+set $lightest #6CB8D2
+set $darkest #212224
+set $colorbar #2B3A3E
+
 # Sets i3 font for dialogs
 font pango: Montserrat Regular 8
 
 # Window Border color
-# class									border				background				text						indicator			child_border
-client.focused					$yellow				$mediumdarkgrey		$yellowbrown		$lightblue		$yellow
-client.focused_inactive	$grey					$darkgrey					$grey						$lightblue
-client.unfocused				$darkgrey			$darkgrey					$mediumgrey			$lightblue
-client.urgent						$urgentred		$darkgrey					$urgentred			$urgentred		$urgentred
+# class							border				background				text						indicator			child_border
+client.focused					$lightest			$mediumdarkgrey			$yellowbrown				$lightblue			$lightest
+client.focused_inactive			$grey				$darkgrey				$grey						$lightblue
+client.unfocused				$darkgrey			$darkgrey				$mediumgrey					$lightblue
+client.urgent					$urgentred			$darkgrey				$urgentred					$urgentred			$urgentred
 
 
 ###############################################################################
@@ -547,14 +551,14 @@ bar
 		colors 
 		{
 			separator     $purple
-			background    $darkgrey
+			background    $colorbar
 			statusline    $white
 		
-		# class								border						background				txt						indicator
-			focused_workspace		$yellow	   				$yellow						$darkgrey			$purple
-			active_workspace		$mediumgrey				$mediumdarkgrey		$yellow				$purple
-			inactive_workspace	$darkgrey					$darkgrey					$mediumgrey		$purple
-			urgent_workspace		$urgentred	   		$urgentred				$white				$purple
+			#class								#border						#background				#txt					#indicator
+			focused_workspace					$lightest	   			 	$lightest				$darkest				$purple
+			active_workspace					$darkest					$darkest				$white					$purple
+			inactive_workspace					$colorbar					$darkest				$colorbar				$purple
+			urgent_workspace					$urgentred	   				$urgentred				$white					$purple
 		}
 }
 

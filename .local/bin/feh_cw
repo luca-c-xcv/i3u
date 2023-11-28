@@ -3,10 +3,74 @@
 # author	luca-lc
 # brief		downloads an image from unsplash, using the passed subjects as argument, and sets it as desktop wallpaper
 #					example "/path/to/cw summer,tropical,beach,water,sunset"
+export DISPLAY=:0
 FILE=~/.customWallpaper.jpg
 RES=3840x2160
 #SUB="dark&night&city&skyline"
 SUB="summer&beach&sea&mediterranean&ocean&sunset"
+
+I3CONFIG=$HOME/.config/i3/config
+TMPCONF=/tmp/conf
+
+#!/bin/bash
+
+# Function to convert hex color to RGB
+hex_to_rgb() {
+    hex=$1
+    r=$(printf "%d" 0x${hex:1:2})
+    g=$(printf "%d" 0x${hex:3:2})
+    b=$(printf "%d" 0x${hex:5:2})
+    echo $r $g $b
+}
+
+# Function to convert RGB color to hex
+rgb_to_hex() {
+    r=$1
+    g=$2
+    b=$3
+    printf "#%02X%02X%02X" $r $g $b
+}
+
+# Function to darken a color
+darken_color() {
+    hex=$1
+    percentage=$2
+    rgb=$(hex_to_rgb $hex)
+    r=$(echo $rgb | awk '{print $1}')
+    g=$(echo $rgb | awk '{print $2}')
+    b=$(echo $rgb | awk '{print $3}')
+    r=$((r - r * $percentage / 100))
+    g=$((g - g * $percentage / 100))
+    b=$((b - b * $percentage / 100))
+    echo $(rgb_to_hex $r $g $b)
+}
+
+# Test the function
+echo 
+
+function changeColors()
+	{
+		local pic=$1
+		declare -a colors 
+		
+		cl=$(convert $pic -scale 2x2\! -format %c -depth 8 histogram:info:-)
+		
+		for c in $cl; do 
+			if [[ $c =~ ^"#" ]]; then
+				colors+=($c)
+			fi
+		done
+		light=${colors[3]}
+		dark=${colors[0]}
+		awk -e '{gsub(/^set \$lightest #\w+$/, "set \$lightest '$light'"); print}' $I3CONFIG > $TMPCONF
+		awk -e '{gsub(/^set \$barcolor #\w+$/, "set \$barcolor '$(darken_color "${dark}" 50)'"); print}' $I3CONFIG > $TMPCONF
+		awk -e '{gsub(/^set \$darkest #\w+$/, "set \$darkest '$dark'"); print}' $TMPCONF > $I3CONFIG
+		
+		rm $TMPCONF
+		
+		i3-msg reload
+	}
+
 
 # set the wallpaper
 function setupwp()
@@ -21,10 +85,13 @@ function setupwp()
 
 		# set new wallpaper
 		# gsettings set org.gnome.desktop.background picture-uri "file:///$FILE"
-    err=$(feh --bg-fill $FILE 2>&1)
-    if [[ ! -z $err ]]; then
-        feh --bg-fill /usr/share/backgrounds/gnome/Car.jpg
-      fi
+   		err=$(feh --bg-fill $FILE 2>&1)
+    	if [[ ! -z $err ]]; then
+        	feh --bg-fill /usr/share/backgrounds/Car.jpg
+        	changeColors /usr/share/backgrounds/Car.jpg
+        else
+        	changeColors $FILE
+      	fi
 	}
 
 
@@ -32,11 +99,13 @@ function setupOLDwp()
 	{
 		if [[ -f $FILE ]]; then
 			err=$(feh --bg-scale $FILE 2>&1)
-      if [[ ! -z $err ]]; then
-        feh --bg-fill /usr/share/backgrounds/gnome/Car.jpg
-      fi
+      		if [[ ! -z $err ]]; then
+        		feh --bg-fill /usr/share/backgrounds/Car.jpg
+        		changeColors /usr/share/backgrounds/Car.jpg
+      		fi
 		else
-			feh --bg-fill /usr/share/backgrounds/gnome/Car.jpg
+			feh --bg-fill /usr/share/backgrounds/Car.jpg
+			changeColors /usr/share/backgrounds/Car.jpg
 		fi
 	}
 
