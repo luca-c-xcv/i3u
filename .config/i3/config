@@ -1,287 +1,176 @@
-###############################################################################
-# i3-gaps config file for the Regolith Desktop Environment
-#
-# Please see http://i3wm.org/docs/userguide.html for a complete reference!
-#
-###############################################################################
-#
-# In this config file many values are taken from Xresources with the directive
-# set_from_resource:
-#
-# set_from_resource <i3 variable name> <Xresources key> <default value>
-#
-# This configuration file utilizes Xresource variables to change configuration
-# without having to make a copy of this config file.
-# The benefit to not copying this file is easier upgrades in the future.
-# To update a value in this config without making a copy, update the Xresource
-# value in the file ~/.config/regolith/Xresources.
-#
-# For example, to change the bar position to the top of the screen this is the
-# i3 config entry in this file:
-# set_from_resource $i3-wm.bar.position i3-wm.bar.position bottom
-#
-# So add this line to ~/.config/regolith/Xresources to change it's value:
-# i3-wm.bar.position: top
-#
-# Reload i3 after making Xresource changes.  Learn more at
-# https://regolith-linux.org/docs/howtos/override-xres/
-#
-###############################################################################
-#
-# This file uses a machine-parsable format for comments. The schema is:
-# ## <Category> // <Action> // <Keybinding> ##
-# Learn more at https://github.com/regolith-linux/remontoire
-#
-###############################################################################
+#############
+# VARIABLES #
+#############
+set $super  Mod4
+set $alt    Mod1
 
-###############################################################################
-# Key Mappings
-###############################################################################
+# Define name for default screens
+set $internal   "eDP1"
+set $external   "HDMI2"
+set $dockC      "DVI-I-1-1"
+set $dockR      "DVI-I-2-2"
+set $hubC       "DP1-1"
+set $hubL       "DP1-2"
 
-# Meta Key - Alt key is Mod1, and Windows key is Mod4
-set_from_resource $super  i3-wm.mod Mod4
-set_from_resource $alt  i3-wm.alt Mod1
+# Define names for default workspaces for which we configure key bindings later on.
+set $ws1    "1"
+set $ws2    "2"
+set $ws3    "3"
+set $ws4    "4"
+set $ws5    "5"
+set $ws6    "6"
+set $ws7    "7"
+set $ws8    "8"
+set $ws9    "9"
+set $ws10   "10"
+set $ws11   "11"
+set $ws12   "12"
+set $ws13   "13"
+set $ws14   "14"
+set $ws15   "15"
+set $ws16   "16"
+set $ws17   "17"
+set $ws18   "18"
+set $ws19   "19"
 
-set_from_resource $i3-wm.binding. i3-wm.binding.
+###################
+# WORSPACE OUTPUT #
+###################
+workspace $ws1      output  $dockC       $hubL       $external       $internal 
+workspace $ws3      output  $dockC       $hubL       $external       $internal
+workspace $ws5      output  $dockC       $hubL       $external       $internal
+workspace $ws7      output  $dockC       $hubL       $external       $internal
+workspace $ws9      output  $dockC       $hubL       $external       $internal
+workspace $ws11     output  $external    $internal 
+workspace $ws13     output  $external    $internal
+workspace $ws15     output  $external    $internal
+workspace $ws17     output  $external    $internal
+workspace $ws19     output  $external    $internal 
 
-###############################################################################
-# Workspace Names
-# These are the labels which define each i3 workspace.
-###############################################################################
+workspace $ws2      output  $dockR       $hubC       $internal
+workspace $ws4      output  $dockR       $hubC       $internal
+workspace $ws6      output  $dockR       $hubC       $internal
+workspace $ws8      output  $dockR       $hubC       $internal
+workspace $ws10     output  $dockR       $hubC       $internal
+workspace $ws12     output  $internal
+workspace $ws14     output  $internal
+workspace $ws16     output  $internal
+workspace $ws18     output  $internal
 
-set_from_resource $ws1  i3-wm.workspace.01.name "1"
-set_from_resource $ws2  i3-wm.workspace.02.name "2"
-set_from_resource $ws3  i3-wm.workspace.03.name "3"
-set_from_resource $ws4  i3-wm.workspace.04.name "4"
-set_from_resource $ws5  i3-wm.workspace.05.name "5"
-set_from_resource $ws6  i3-wm.workspace.06.name "6"
-set_from_resource $ws7  i3-wm.workspace.07.name "7"
-set_from_resource $ws8  i3-wm.workspace.08.name "8"
-set_from_resource $ws9  i3-wm.workspace.09.name "9"
-set_from_resource $ws10 i3-wm.workspace.10.name "10"
-set_from_resource $ws11 i3-wm.workspace.11.name "11"
-set_from_resource $ws12 i3-wm.workspace.12.name "12"
-set_from_resource $ws13 i3-wm.workspace.13.name "13"
-set_from_resource $ws14 i3-wm.workspace.14.name "14"
-set_from_resource $ws15 i3-wm.workspace.15.name "15"
-set_from_resource $ws16 i3-wm.workspace.16.name "16"
-set_from_resource $ws17 i3-wm.workspace.17.name "17"
-set_from_resource $ws18 i3-wm.workspace.18.name "18"
-set_from_resource $ws19 i3-wm.workspace.19.name "19"
 
-set $internal "eDP1"
-set $external "HDMI2"
-set $dockC "DVI-I-1-1"
-set $dockR "DVI-I-2-2"
-set $hubC "DP1-1"
-set $hubL "DP1-2"
-
- workspace 1 output $dockC $hubL $external $internal 
- workspace 3 output $dockC $hubL $external $internal
- workspace 5 output $dockC $hubL $external $internal
- workspace 7 output $dockC $hubL $external $internal
- workspace 9 output $dockC $hubL $external $internal
- workspace 11 output $external $internal 
- workspace 13 output $external $internal
- workspace 15 output $external $internal
- workspace 17 output $external $internal
- workspace 19 output $external $internal 
-
- workspace 2 output $dockR $hubC$internal
- workspace 4 output $dockR $hubC$internal
- workspace 6 output $dockR $hubC$internal
- workspace 8 output $dockR $hubC$internal
- workspace 10 output $dockR $hubC $internal
- workspace 12 output $internal
- workspace 14 output $internal
- workspace 16 output $internal
- workspace 18 output $internal
- workspace 20 output $internal
-
-###############################################################################
-# Workspace Keys
-# These are the keys which will be used while binding workspace switching
-###############################################################################
-
-set_from_resource $ws1_key  i3-wm.workspace.01.key 1
-set_from_resource $ws2_key  i3-wm.workspace.02.key 2
-set_from_resource $ws3_key  i3-wm.workspace.03.key 3
-set_from_resource $ws4_key  i3-wm.workspace.04.key 4
-set_from_resource $ws5_key  i3-wm.workspace.05.key 5
-set_from_resource $ws6_key  i3-wm.workspace.06.key 6
-set_from_resource $ws7_key  i3-wm.workspace.07.key 7
-set_from_resource $ws8_key  i3-wm.workspace.08.key 8
-set_from_resource $ws9_key  i3-wm.workspace.09.key 9
-set_from_resource $ws10_key i3-wm.workspace.10.key 0
-
-###############################################################################
-# Launcher dialogs
-###############################################################################
-
-## Launch // Terminal // <> Enter ##
+###########
+# BINDING #
+###########
+# terminal
 bindsym $super+Return exec /usr/bin/x-terminal-emulator
 
-## Launch // Browser // <>b ##
+# default browser
 bindsym $super+b exec gtk-launch $(xdg-settings get default-web-browser)
-# bindsym $super+b exec brave-browser 127.0.0.1
 
-## Launch // Browser selector // <><Shift>b ##
-bindsym $super+Shift+b exec ~/.config/i3/scripts/ui/browser_selector
-
-## Launch // Application // <> Space ##
+# rofi app select
 bindsym $super+space exec rofi -modi drun -show drun -config ~/.config/rofi/rofidmenu.rasi
 
-## Launch // Command // <><Shift> Space ##
+# rofi command run
 bindsym $super+Shift+space exec rofi -show run -config ~/.config/rofi/rofidmenu.rasi
 
-## Navigate // Window by Name // <><Ctrl> Space ##
-bindsym $super+Ctrl+space exec rofi -show window -config ~/.config/rofi/rofidmenu.rasi
+# window list 
+bindsym $super+w exec rofi -show window -config ~/.config/rofi/rofidmenu.rasi
 
-## Launch // This Dialog // <><Shift> ? ##
-# bindsym $super+Shift+question exec --no-startup-id /usr/bin/remontoire-toggle
-
-## Launch // File Search // <><Alt> Space ##
-# bindsym $super+$alt+space exec rofi -show find -modi find:/usr/share/rofi/modi/finder.sh -config ~/.config/rofi/rofidmenu.rasi
-
-## Launch // Look Selector // <><Alt> l ##
-bindsym $super+$alt+l exec ~/.config/i3/scripts/ui/rofiLooks
-
-###############################################################################
-# Window and Workspace Navigation
-###############################################################################
-
-## Navigate // Relative Parent // <> a ##/
+# focus parent container
 bindsym $super+a focus parent
 
-## Navigate // Relative Child // <> z ##/
+# focus child container
 bindsym $super+z focus child
 
-## Navigate // Relative Window // <> ↑ ↓ ← → ##
+# change focus
 bindsym $super+Left focus left
 bindsym $super+Down focus down
 bindsym $super+Up focus up
 bindsym $super+Right focus right
 
-## Navigate // Relative Window // <> k j h l ##
-# bindsym $super+h focus left
-# bindsym $super+j focus down
-# bindsym $super+k focus up
-# bindsym $super+l focus right
+# switch to workspace
+bindsym $super+1    workspace   $ws1
+bindsym $super+2    workspace   $ws2
+bindsym $super+3    workspace   $ws3
+bindsym $super+4    workspace   $ws4
+bindsym $super+5    workspace   $ws5
+bindsym $super+6    workspace   $ws6
+bindsym $super+7    workspace   $ws7
+bindsym $super+8    workspace   $ws8
+bindsym $super+9    workspace   $ws9
+bindsym $super+0    workspace   $ws10
+bindsym $super+F1   workspace   $ws11
+bindsym $super+F2   workspace   $ws12
+bindsym $super+F3   workspace   $ws13
+bindsym $super+F4   workspace   $ws14
+bindsym $super+F5   workspace   $ws15
+bindsym $super+F6   workspace   $ws16
+bindsym $super+F7   workspace   $ws17
+bindsym $super+F8   workspace   $ws18
+bindsym $super+F9   workspace   $ws19
 
-## Navigate // Workspaces 1-10 // <> 0..9 ##
-bindsym $super+$ws1_key workspace number $ws1
-bindsym $super+$ws2_key workspace number $ws2
-bindsym $super+$ws3_key workspace number $ws3
-bindsym $super+$ws4_key workspace number $ws4
-bindsym $super+$ws5_key workspace number $ws5
-bindsym $super+$ws6_key workspace number $ws6
-bindsym $super+$ws7_key workspace number $ws7
-bindsym $super+$ws8_key workspace number $ws8
-bindsym $super+$ws9_key workspace number $ws9
-bindsym $super+$ws10_key workspace number $ws10
-## Navigate // Workspace 11 - 19 // <><Ctrl> 1..9 ##
-bindsym $super+F1 workspace number $ws11
-bindsym $super+F2 workspace number $ws12
-bindsym $super+F3 workspace number $ws13
-bindsym $super+F4 workspace number $ws14
-bindsym $super+F5 workspace number $ws15
-bindsym $super+F6 workspace number $ws16
-bindsym $super+F7 workspace number $ws17
-bindsym $super+F8 workspace number $ws18
-bindsym $super+F9 workspace number $ws19
-
-## Navigate // Next Workspace // <> Tab ##
+# next workspace
 bindsym $super+Tab workspace next
 
-## Navigate // Next Workspace // <><Alt> → ##
-bindsym $super+$alt+Right workspace next
-
-## Navigate // Next Workspace on Output // <><Ctrl> Tab ##
+# next workspace on output
 bindsym $super+Ctrl+Tab workspace next_on_output
 
-## Navigate // Next Workspace on Output // <><Ctrl> l ##
-# bindsym $super+Ctrl+l workspace next_on_output
-
-## Navigate // Previous Workspace // <><Shift> Tab ##
+# previous orkspace 
 bindsym $super+Shift+Tab workspace prev
 
-## Navigate // Previous Workspace // <><Alt> ← ##
-bindsym $super+$alt+Left workspace prev
-
-## Navigate // Previous Workspace on Output // <><Ctrl><Shift> Tab ##
+# previous workspace on output
 bindsym $super+Ctrl+Shift+Tab workspace prev_on_output
 
-## Navigate // Previous Workspace on Output // <><Ctrl> h ##
-# bindsym $super+Ctrl+h workspace prev_on_output
-
-
-## Navigate // Scratchpad // <><Ctrl> a ##
+# show scratchpad
 bindsym $super+Ctrl+v scratchpad show
 
-###############################################################################
-# Window and Workspace Configuration
-###############################################################################
+# move to scratchpad
+bindsym $super+Ctrl+n move to scratchpad
 
-## Modify // Window Position // <><Shift> ↑ ↓ ← → ##
+# change window position
 bindsym $super+Shift+Left move left
 bindsym $super+Shift+Down move down
 bindsym $super+Shift+Up move up
 bindsym $super+Shift+Right move right
 
-## Modify // Window Position // <><Shift> k j h l ##
-# bindsym $super+Shift+h move left
-# bindsym $super+Shift+j move down
-# bindsym $super+Shift+k move up
-# bindsym $super+Shift+l move right
-
-## Modify // Containing Workspace // <><Ctrl><Shift> ↑ ↓ ← → ##
+# change containing workspace
 bindsym $super+Ctrl+Shift+Left move workspace to output left
 bindsym $super+Ctrl+Shift+Down move workspace to output down
 bindsym $super+Ctrl+Shift+Up move workspace to output up
 bindsym $super+Ctrl+Shift+Right move workspace to output right
 
-## Modify // Containing Workspace // <><Ctrl><Shift> k j h l ##
-# bindsym $super+Ctrl+Shift+h move workspace to output left
-# bindsym $super+Ctrl+Shift+j move workspace to output down
-# bindsym $super+Ctrl+Shift+k move workspace to output up
-# bindsym $super+Ctrl+Shift+l move workspace to output right
-
-## Modify // Vertical Window Orientation // <> v ##
+# split vertical window
 bindsym $super+v split vertical
 
-## Modify // Horizontal Window Orientation // <> g ##
+# split horizontal window
 bindsym $super+g split horizontal
 
-## Modify // Toggle Window Orientation // <> Backspace ##
+# toggle split window
 bindsym $super+BackSpace split toggle
 
-## Modify // Window Fullscreen Toggle // <> f ##
+# window fullscreen toggle
 bindsym $super+f fullscreen toggle
 
-## Modify // Window Floating Toggle // <><Shift> f ##
+# window floating toggle
 bindsym $super+Shift+f floating toggle
 
-## Modify // Move to Scratchpad // <><Ctrl> m ##
-bindsym $super+Ctrl+n move to scratchpad
-
-## Modify // Tile/Float Focus Toggle // <><Shift> t ##
+# tile/float/focus toggle
 bindsym $super+Shift+t focus mode_toggle
 
-## Modify // Window Layout Mode // <> t ##
+# window layout mode
 bindsym $super+t layout toggle tabbed splith splitv
 
-## Modify // Move Window to Workspace 1 - 10 // <><Shift> 0..9 ##
-bindsym $super+Shift+$ws1_key move container to workspace number $ws1
-bindsym $super+Shift+$ws2_key move container to workspace number $ws2
-bindsym $super+Shift+$ws3_key move container to workspace number $ws3
-bindsym $super+Shift+$ws4_key move container to workspace number $ws4
-bindsym $super+Shift+$ws5_key move container to workspace number $ws5
-bindsym $super+Shift+$ws6_key move container to workspace number $ws6
-bindsym $super+Shift+$ws7_key move container to workspace number $ws7
-bindsym $super+Shift+$ws8_key move container to workspace number $ws8
-bindsym $super+Shift+$ws9_key move container to workspace number $ws9
-bindsym $super+Shift+$ws10_key move container to workspace number $ws10
-## Modify // Move Window to Workspace 11 - 19// <><Ctrl><Shift> 1..9 ##
+# move window to workspace 1 - 19
+bindsym $super+Shift+1  move container to workspace number $ws1
+bindsym $super+Shift+2  move container to workspace number $ws2
+bindsym $super+Shift+3  move container to workspace number $ws3
+bindsym $super+Shift+4  move container to workspace number $ws4
+bindsym $super+Shift+5  move container to workspace number $ws5
+bindsym $super+Shift+6  move container to workspace number $ws6
+bindsym $super+Shift+7  move container to workspace number $ws7
+bindsym $super+Shift+8  move container to workspace number $ws8
+bindsym $super+Shift+9  move container to workspace number $ws9
+bindsym $super+Shift+0  move container to workspace number $ws10
 bindsym $super+Shift+F1 move container to workspace number $ws11
 bindsym $super+Shift+F2 move container to workspace number $ws12
 bindsym $super+Shift+F3 move container to workspace number $ws13
@@ -292,106 +181,79 @@ bindsym $super+Shift+F7 move container to workspace number $ws17
 bindsym $super+Shift+F8 move container to workspace number $ws18
 bindsym $super+Shift+F9 move container to workspace number $ws19
 
-
 # move focused container to workspace, move to workspace
-## Modify // Carry Window to Workspace 1 - 10// <><Alt> 0..9 ##
-bindsym $super+$alt+$ws1_key move container to workspace number $ws1; workspace number $ws1
-bindsym $super+$alt+$ws2_key move container to workspace number $ws2; workspace number $ws2
-bindsym $super+$alt+$ws3_key move container to workspace number $ws3; workspace number $ws3
-bindsym $super+$alt+$ws4_key move container to workspace number $ws4; workspace number $ws4
-bindsym $super+$alt+$ws5_key move container to workspace number $ws5; workspace number $ws5
-bindsym $super+$alt+$ws6_key move container to workspace number $ws6; workspace number $ws6
-bindsym $super+$alt+$ws7_key move container to workspace number $ws7; workspace number $ws7
-bindsym $super+$alt+$ws8_key move container to workspace number $ws8; workspace number $ws8
-bindsym $super+$alt+$ws9_key move container to workspace number $ws9; workspace number $ws9
-bindsym $super+$alt+$ws10_key move container to workspace number $ws10; workspace number $ws10
-## Modify // Carry Window to Workspace 11 - 19 // <><Alt><Ctrl> 1..9 ##
-bindsym $super+$alt+Ctrl+$ws1_key move container to workspace number $ws11; workspace number $ws11
-bindsym $super+$alt+Ctrl+$ws2_key move container to workspace number $ws12; workspace number $ws12
-bindsym $super+$alt+Ctrl+$ws3_key move container to workspace number $ws13; workspace number $ws13
-bindsym $super+$alt+Ctrl+$ws4_key move container to workspace number $ws14; workspace number $ws14
-bindsym $super+$alt+Ctrl+$ws5_key move container to workspace number $ws15; workspace number $ws15
-bindsym $super+$alt+Ctrl+$ws6_key move container to workspace number $ws16; workspace number $ws16
-bindsym $super+$alt+Ctrl+$ws7_key move container to workspace number $ws17; workspace number $ws17
-bindsym $super+$alt+Ctrl+$ws8_key move container to workspace number $ws18; workspace number $ws18
-bindsym $super+$alt+Ctrl+$ws9_key move container to workspace number $ws19; workspace number $ws19
+bindsym $super+$alt+1   move container to workspace number $ws1; workspace number $ws1
+bindsym $super+$alt+2   move container to workspace number $ws2; workspace number $ws2
+bindsym $super+$alt+3   move container to workspace number $ws3; workspace number $ws3
+bindsym $super+$alt+4   move container to workspace number $ws4; workspace number $ws4
+bindsym $super+$alt+5   move container to workspace number $ws5; workspace number $ws5
+bindsym $super+$alt+6   move container to workspace number $ws6; workspace number $ws6
+bindsym $super+$alt+7   move container to workspace number $ws7; workspace number $ws7
+bindsym $super+$alt+8   move container to workspace number $ws8; workspace number $ws8
+bindsym $super+$alt+9   move container to workspace number $ws9; workspace number $ws9
+bindsym $super+$alt+0   move container to workspace number $ws10; workspace number $ws10
+bindsym $super+$alt+F1  move container to workspace number $ws11; workspace number $ws11
+bindsym $super+$alt+F2  move container to workspace number $ws12; workspace number $ws12
+bindsym $super+$alt+F3  move container to workspace number $ws13; workspace number $ws13
+bindsym $super+$alt+F4  move container to workspace number $ws14; workspace number $ws14
+bindsym $super+$alt+F5  move container to workspace number $ws15; workspace number $ws15
+bindsym $super+$alt+F6  move container to workspace number $ws16; workspace number $ws16
+bindsym $super+$alt+F7  move container to workspace number $ws17; workspace number $ws17
+bindsym $super+$alt+F8  move container to workspace number $ws18; workspace number $ws18
+bindsym $super+$alt+F9  move container to workspace number $ws19; workspace number $ws19
 
+# exit app
+bindsym $super+q kill
 
-# Use Mouse+$super to drag floating windows to their wanted position
-floating_modifier $super
+# kill app
+bindsym $super+Ctrl+q exec --no-startup-id kill -9 $(xprop -id $(xprop -root _NET_ACTIVE_WINDOW | cut -d ' ' -f 5) _NET_WM_PID | awk '{print $3}')
 
-# Hiding borders adjacent to the screen edges.
-# The "smart" setting hides borders on workspaces with only one window visible. hide_edge_borders none|vertical|horizontal|both|smart
-hide_edge_borders smart
-
-# Set the default layout mode
-workspace_layout default
-
-###############################################################################
-# Session Management
-###############################################################################
-
-## Session // Exit App // <><Shift> q ##
-bindsym $super+Shift+q [con_id="__focused__"] kill
-
-## Session // Terminate App // <><Alt> q ##
-bindsym $super+$alt+q [con_id="__focused__"] exec --no-startup-id kill -9 $(xdotool getwindowfocus getwindowpid)
-
-## Session // Reload i3 Config // <><Shift> c ##
+# reload i3
 bindsym $super+Shift+r reload
 
-## Session // Restart i3 // <><Ctrl> r ##
+# restart i3
 bindsym $super+Ctrl+r restart
 
-## Session // Logout // <><Shift> e ##
-for_window [class="(?i)Yad"] floating enable
-bindsym $super+Shift+e exec ~/.config/i3/scripts/ui/logoutShortcut --class=floating_window
-
-## Session // Power Menu // <><Shift> p ##
+# power menu
 bindsym $super+Shift+p exec --no-startup-id ~/.config/i3/scripts/ui/powermenu
 
-## Session // Lock Screen // <> Escape ##
+# lock screen
 bindsym $super+Escape exec i3lock-fancy
 
-## Session // Sleep // <><Shift> Escape ##
+# suspend
 bindsym $super+Shift+Escape exec systemctl suspend
 
-###############################################################################
-# System Management
-###############################################################################
-
-## Modify // Settings // <> c ##
+# gnome-control-center
 bindsym $super+c exec gnome-control-center --class=floating_window
 
-## Launch // File Browser // <><Shift> n ##
-bindsym $super+Shift+n exec /usr/bin/nemo
+# file manager
+bindsym $super+n exec /usr/bin/nemo
 
-## Launch // Notification Viewer // <> n ##
-bindsym $super+n exec --no-startup-id dunstctl history-pop
+# notification viewer
+bindsym $super+Shift+n exec --no-startup-id dunstctl history-pop
 
-## Launch // Close All Notification // <><Shift><Ctrl> n ##
+# close all notification
 bindsym $super+Shift+Ctrl+n exec --no-startup-id dunstctl close-all
 
-## screen(s) screenshot
+# toggle bar
+bindsym $super+i bar mode toggle
+
+# screen(s) screenshot
 bindsym --release Print exec gnome-screenshot
 
-## area screenshot
+# area screenshot
 bindsym --release Shift+Print exec gnome-screenshot -a
 
-## window screenshot
+# window screenshot
 bindsym --release Ctrl+Print exec gnome-screenshot -w
 
-## History Keyboad
-bindsym $super+Shift+v exec /usr/bin/diodon
-
-## volume keybinding
+# volume keybinding
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle # mute
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle #mic mute
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +2% # raising
 bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -2% # lowering
 
-
-## media controller keybinding
+# media controller keybinding
 bindsym XF86AudioPlay exec --no-startup-id playerctl play-pause # toggle play-pause
 bindsym XF86AudioPause exec --no-startup-id playerctl play-pause # toggle play-pause
 bindsym XF86AudioNext exec --no-startup-id playerctl next # forward song
@@ -399,97 +261,76 @@ bindsym XF86AudioPrev exec --no-startup-id playerctl previous # backward song
 bindsym XF86MonBrightnessDown  exec --no-startup-id ~/.config/i3/scripts/bar/redlight2 down # brighness down
 bindsym XF86MonBrightnessUp  exec --no-startup-id ~/.config/i3/scripts/bar/redlight2 up # brightness up
 
-
-## extra shortcut
+# extra shortcut
+bindsym $super+Shift+b exec ~/.config/i3/scripts/ui/browser_selector
+bindsym $super+$alt+l exec ~/.config/i3/scripts/ui/rofiLooks
 bindsym $super+Shift+Return exec /usr/bin/code
 bindsym $super+Shift+l exec ~/.config/i3/scripts/ui/openlayout_shortcut
 bindsym $super+Shift+m exec ~/.local/bin/espace
+bindsym $super+Shift+v exec /usr/bin/diodon
 
-
-###############################################################################
-# Workspace Management
-###############################################################################
-
-# Toggle bar visibility
-## Modify // Toggle Bar // <> i ##
-bindsym $super+i bar mode toggle
-
-# Cause Settings app to float above tiled windows
-floating_maximum_size -1 x -1
-for_window [class="floating_window"] floating enable
-
-for_window [class="Blueman-manager"] floating enable
-for_window [class="Gnome-control-center"] floating enable
-for_window [class="Gnome-calculator"] floating enable
-for_window [class="Pavucontrol"] floating enable
-# for_window [class=Chromium] border pixel 1
-# for_window [class=Brave] border pixel 1
-# for_window [title=Brave] border pixel 1
-for_window [class=KeePass2] floating enable
-
-
-
-workspace_auto_back_and_forth no
-
-###############################################################################
-# Window Resize and Gaps
-###############################################################################
-
-## Resize // Resize Window // ↑ ↓ ← → ##
-bindsym $super+Ctrl+$alt+Left resize shrink width 3 px or 3 ppt
-bindsym $super+Ctrl+$alt+Down resize grow height 3 px or 3 ppt
-bindsym $super+Ctrl+$alt+Up resize shrink height 3 px or 3 ppt
-bindsym $super+Ctrl+$alt+Right resize grow width 3 px or 3 ppt
-
-## Resize // Window Gaps // + - ##
-bindsym $super+Ctrl+$alt+minus gaps inner current minus 3
-bindsym $super+Ctrl+$alt+plus gaps inner current plus 3
-
-
-## Resize // Enter Resize Mode // <> r ##
+# resize
 mode "Resize Mode" 
 {
-	# These bindings trigger as soon as you enter the resize mode
-
-	## Resize // Resize Window // ↑ ↓ ← → ##
-	bindsym Left resize shrink width 6 px or 6 ppt
-	bindsym Down resize grow height 6 px or 6 ppt
-	bindsym Up resize shrink height 6 px or 6 ppt
-	bindsym Right resize grow width 6 px or 6 ppt
+	bindsym Left resize shrink width 4 px or 4 ppt
+	bindsym Down resize grow height 4 px or 4 ppt
+	bindsym Up resize shrink height 4 px or 4 ppt
+	bindsym Right resize grow width 4 px or 4 ppt
 
 	bindsym Shift+Left resize shrink width 12 px or 12 ppt
 	bindsym Shift+Down resize grow height 12 px or 12 ppt
 	bindsym Shift+Up resize shrink height 12 px or 12 ppt
 	bindsym Shift+Right resize grow width 12 px or 12 ppt
 
-	## Resize // Window Gaps // + - ##
-	bindsym minus gaps inner current minus 6
-	bindsym plus gaps inner current plus 6
+	bindsym minus gaps inner current minus 4
+	bindsym plus gaps inner current plus 4
 	bindsym Shift+minus gaps inner current minus 12
 	bindsym Shift+plus gaps inner current plus 12
 
-	## Resize // Exit Resize Mode // Escape or Enter ##
 	bindsym Return mode "default"
 	bindsym Escape mode "default"
 	bindsym $super+r mode "default"
 }
 bindsym $super+r mode "Resize Mode"
+bindsym $super+Ctrl+$alt+Left resize shrink width 3 px or 3 ppt
+bindsym $super+Ctrl+$alt+Down resize grow height 3 px or 3 ppt
+bindsym $super+Ctrl+$alt+Up resize shrink height 3 px or 3 ppt
+bindsym $super+Ctrl+$alt+Right resize grow width 3 px or 3 ppt
+bindsym $super+Ctrl+$alt+minus gaps inner current minus 3
+bindsym $super+Ctrl+$alt+plus gaps inner current plus 3
 
-###############################################################################
-# i3 Appearance and Behavior
-###############################################################################
+
+###########################
+# appearance and behavior #
+###########################
+floating_modifier $super
+floating_maximum_size -1 x -1
+
+for_window [class="floating_window"] floating enable
+for_window [class="(?i)Yad"] floating enable
+for_window [class="Blueman-manager"] floating enable
+for_window [class="Gnome-control-center"] floating enable
+for_window [class="Gnome-calculator"] floating enable
+for_window [class="Pavucontrol"] floating enable
+for_window [class="KeePass2"] floating enable
+
+
+workspace_auto_back_and_forth no
+
+hide_edge_borders smart
+
+
+workspace_layout default
+
 # Disable titlebar
 for_window [class="^.*"] border pixel 1
 title_align center
 default_border none
 default_floating_border pixel 1
 
-# Specify the distance between windows in pixels. (i3-gaps)
+# Specify the distance between windows in pixels
 gaps inner 6
 gaps outer 6
-
-# Only enable gaps on a workspace when there is at least one container
-#smart_gaps on
 
 # Enable popup during fullscreen
 popup_during_fullscreen smart
@@ -497,74 +338,12 @@ popup_during_fullscreen smart
 # window focus follows your mouse movements as the mouse crosses window borders
 focus_follows_mouse no
 
-###############################################################################
-# i3 Colors and Fonts
-###############################################################################
+#set theme
+include $HOME/.config/i3/themes/dark.conf
 
-#set colors
-set $darkbluetrans	#08052be6
-set $darkblue				#08052b
-set $lightblue			#5294e2
-set $urgentred			#e53935
-set $white					#ffffff
-set $black					#000000
-set $purple					#e345ff
-set $darkgrey				#383c4a
-set $mediumdarkgrey #4e5467
-set $grey						#b0b5bd
-set $mediumgrey			#8b8b8b
-set $yellow         #fff768
-set $yellowbrown		#f7d26b
-
-set $lightest #6CB8D2
-set $darkest #212224
-set $colorbar #2B3A3E
-
-# Sets i3 font for dialogs
-font pango: Montserrat Regular 8
-
-# Window Border color
-# class							border				background				text						indicator			child_border
-client.focused					$lightest			$mediumdarkgrey			$yellowbrown				$lightblue			$lightest
-client.focused_inactive			$grey				$darkgrey				$grey						$lightblue
-client.unfocused				$darkgrey			$darkgrey				$mediumgrey					$lightblue
-client.urgent					$urgentred			$darkgrey				$urgentred					$urgentred			$urgentred
-
-
-###############################################################################
-# i3 Bar
-###############################################################################
-
-bar 
-{
-		font pango: Montserrat Regular 8
-		status_command i3blocks -c ~/.config/i3/i3blocks.conf
-		position top
-		mode dock
-		tray_output primary
-		tray_padding 0
-		strip_workspace_numbers yes
-		# When strip_workspace_numbers is set to yes,
-		# any workspace that has a name of the form
-		# “[n][:][NAME]” will display only the name.
-
-		colors 
-		{
-			separator     $purple
-			background    $colorbar
-			statusline    $white
-		
-			#class								#border						#background				#txt					#indicator
-			focused_workspace					$lightest	   			 	$lightest				$darkest				$purple
-			active_workspace					$darkest					$darkest				$white					$purple
-			inactive_workspace					$colorbar					$darkest				$colorbar				$purple
-			urgent_workspace					$urgentred	   				$urgentred				$white					$purple
-		}
-}
-
-###############################################################################
-# External programs launched with i3
-###############################################################################
+###############################
+# External programs to launch #
+###############################
 
 # Start dunst for notifications
 exec --no-startup-id dunst --config ~/.config/dunst/dunstrc
