@@ -1,6 +1,6 @@
 #!/bin/bash
 
-~/.local/bin/feh_cw &
+#~/.local/bin/feh_cw &
 
 /usr/bin/redshift &
 
