@@ -10,96 +10,91 @@ USER=$1
 ### :: FUNCTIONS :: ###
 #######################
 function install_basic()
-  {
-    snap install chromium morgen gimp dbeaver-ce
+    {
+        snap install chromium morgen gimp dbeaver-ce
 
-    apt install -y yad sane sane-utils xsane xsane-common xbacklight ufw udisks2 tmux gnome-screenshot simplescreenrecorder scrcpy openssh-server git git-flow ca-certificates curl gnupg lsb-release keepass2 wget gpg apt-transport-https baobab bleachbit zathura htop flatpak arandr net-tools mono-complete
-  }
+        apt install -y yad sane sane-utils xsane xsane-common xbacklight ufw udisks2 tmux gnome-screenshot simplescreenrecorder scrcpy openssh-server git git-flow ca-certificates curl gnupg lsb-release keepass2 wget gpg apt-transport-https baobab bleachbit zathura htop flatpak arandr net-tools mono-complete
+    }
 
 function install_docker()
-  {
-    if [[ ! -d /etc/apt/keyrings  ]]; then
-      mkdir -p /etc/apt/keyrings
-    fi
-    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-    
-    echo \
-    "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
-    $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
-    chmod a+r /etc/apt/keyrings/docker.gpg
-    apt update && apt install -y docker-ce docker-ce-cli containerd.io docker-compose docker-compose-plugin
-  }
+    {
+        if [[ ! -d /etc/apt/keyrings  ]]; then
+            mkdir -p /etc/apt/keyrings
+        fi
+        curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+        
+        echo \
+        "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+        $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
+        chmod a+r /etc/apt/keyrings/docker.gpg
+        apt update && apt install -y docker-ce docker-ce-cli containerd.io docker-compose docker-compose-plugin
+    }
 
 function install_vscode()
-  {    
-    wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
-    
-    install -D -o root -g root -m 644 packages.microsoft.gpg /etc/apt/keyrings/packages.microsoft.gpg
-    
-    sh -c 'echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list'
-    
-    rm -f packages.microsoft.gpg
+    {    
+        wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
+        
+        install -D -o root -g root -m 644 packages.microsoft.gpg /etc/apt/keyrings/packages.microsoft.gpg
+        
+        sh -c 'echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list'
+        
+        rm -f packages.microsoft.gpg
 
-    apt update && apt install -y code
-  }
+        apt update && apt install -y code
+    }
 
 function install_brave()
-  {
-    curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg
+    {
+        curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg
 
-    echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main"|tee /etc/apt/sources.list.d/brave-browser-release.list
+        echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main"|tee /etc/apt/sources.list.d/brave-browser-release.list
 
-    apt update && apt install -y brave-browser
-  }
+        apt update && apt install -y brave-browser
+    }
 
 function install_signal()
-  {
-    wget -O- https://updates.signal.org/desktop/apt/keys.asc | gpg --dearmor > signal-desktop-keyring.gpg
-    
-    cat signal-desktop-keyring.gpg | tee -a /usr/share/keyrings/signal-desktop-keyring.gpg > /dev/null
-    
-    echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/signal-desktop-keyring.gpg] https://updates.signal.org/desktop/apt xenial main' | tee -a /etc/apt/sources.list.d/signal-xenial.list
-    
-    apt update && apt install -y signal-desktop
-  }
+    {
+        wget -O- https://updates.signal.org/desktop/apt/keys.asc | gpg --dearmor > signal-desktop-keyring.gpg
+        
+        cat signal-desktop-keyring.gpg | tee -a /usr/share/keyrings/signal-desktop-keyring.gpg > /dev/null
+        
+        echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/signal-desktop-keyring.gpg] https://updates.signal.org/desktop/apt xenial main' | tee -a /etc/apt/sources.list.d/signal-xenial.list
+        
+        apt update && apt install -y signal-desktop
+    }
 
 function install_otherApps()
-  {
-    if [[ ! -d /home/$USER/Applications ]]; then
-      mkdir -p /home/$USER/Applications
-    fi
+    {
+        if [[ ! -d /home/$USER/Applications ]]; then
+            mkdir -p /home/$USER/Applications
+        fi
 
-    ## Telegram
-    wget https://telegram.org/dl/desktop/linux -O Telegram.tar.xz
-    tar -xvf Telegram.tar.xz
-    mv Telegram /home/$USER/Applications
-    rm Telegram.tar.xz
+        ## Telegram
+        wget https://telegram.org/dl/desktop/linux -O Telegram.tar.xz
+        tar -xvf Telegram.tar.xz
+        mv Telegram /home/$USER/Applications
+        rm Telegram.tar.xz
 
-    ## TOR
-    wget https://www.torproject.org/dist/torbrowser/12.0.3/tor-browser-linux64-12.0.3_ALL.tar.xz -O Tor.tar.xz
-    tar -xvf Tor.tar.xz
-    mv tor* Tor && mv Tor /home/$USER/Applications
-    rm Tor.tar.xz
+        ## TOR
+        wget https://www.torproject.org/dist/torbrowser/12.0.3/tor-browser-linux64-12.0.3_ALL.tar.xz -O Tor.tar.xz
+        tar -xvf Tor.tar.xz
+        mv tor* Tor && mv Tor /home/$USER/Applications
+        rm Tor.tar.xz
 
-    ## Gmail
-    wget https://github.com/timche/gmail-desktop/releases/download/v2.25.3/gmail-desktop-2.25.3-linux.AppImage -O gmail.AppImage
-    chmod 755 gmail.AppImage
-    mv gmail.AppImage /home/$USER/Applications
+        ## speedtest
+        curl -s https://packagecloud.io/install/repositories/ookla/speedtest-cli/script.deb.sh | bash
+        apt-get install speedtest
 
-    ## speedtest
-    curl -s https://packagecloud.io/install/repositories/ookla/speedtest-cli/script.deb.sh | bash
-    apt-get install speedtest
+        ## LibreOffice 
+        wget https://appimages.libreitalia.org/LibreOffice-still.standard-x86_64.AppImage -O libreoffice.AppImage
+        chmod 755 libreoffice.AppImage
+        mv libreoffice.AppImage /home/$USER/Applications
 
-    ## LibreOffice 
-    wget https://appimages.libreitalia.org/LibreOffice-still.standard-x86_64.AppImage -O libreoffice.AppImage
-    chmod 755 libreoffice.AppImage
-    mv libreoffice.AppImage /home/$USER/Applications
-
-    ## OnlyOffice
-    wget https://download.onlyoffice.com/install/desktop/editors/linux/DesktopEditors-x86_64.AppImage -O onlyoffice.AppImage
-    chmod 755 onlyoffice.AppImage
-    mv onlyoffice.AppImage /home/$USER/Applications
-  }
+        ## OnlyOffice
+        wget https://download.onlyoffice.com/install/desktop/editors/linux/DesktopEditors-x86_64.AppImage -O onlyoffice.AppImage
+        chmod 755 onlyoffice.AppImage
+        mv onlyoffice.AppImage /home/$USER/Applications
+    }
 
 
 ## help message
@@ -112,14 +107,14 @@ function help()
 
 
 function main()
-  {
-    install_basic
-    install_docker
-    install_vscode
-    install_brave
-    install_signal
-    install_otherApps
-  }
+    {
+        install_basic
+        install_docker
+        install_vscode
+        install_brave
+        install_signal
+        install_otherApps
+    }
 
 
 if [[ "$EUID" = 0 ]]; then
