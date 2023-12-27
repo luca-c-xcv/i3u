@@ -15,25 +15,25 @@ NC='\033[0m'
 
 ## wait one second to continue next steps to help the system to complete the installations
 function _waiting()
-  {
-    echo -e "${CYAN}..." && sleep 1 && echo -e "...${NC}\n" && sleep 1
-  }
+    {
+        echo -e "${CYAN}..." && sleep 1 && echo -e "...${NC}\n" && sleep 1
+    }
 
 ## print in STOUT the function argument as message
 ## used to print the progress status 
 function _printMsg()
-  {
-    echo -e "\n${CYAN}$1${NC}\n"
-  }
+    {
+        echo -e "\n${CYAN}$1${NC}\n"
+    }
 
 ## function to choice the shell version
 function _chooseSH()
-  {
-    echo -e "${RED}Type selection number for alternative shell${NC}"
-    echo -e "${RED}\t 1)\t bash${NC}"
-    echo -e "${RED}\t 2)\t zsh${NC}"
-    read -p "Choose a number " SHCHOSEN
-  }
+    {
+        echo -e "${RED}Type selection number for alternative shell${NC}"
+        echo -e "${RED}\t 1)\t bash${NC}"
+        echo -e "${RED}\t 2)\t zsh${NC}"
+        read -p "Choose a number " SHCHOSEN
+    }
 
 ##################################
 ### :: INSTALLING FUNCTIONS :: ###
@@ -42,24 +42,28 @@ function _chooseSH()
 ## adding required repos
 function add_repos( )
 	{
-    _printMsg "adding new repos..."
+        _printMsg "adding new repos..."
 
-    ## adding official i3 repo
-		/usr/lib/apt/apt-helper download-file https://debian.sur5r.net/i3/pool/main/s/sur5r-keyring/sur5r-keyring_2023.02.18_all.deb keyring.deb SHA256:a511ac5f10cd811f8a4ca44d665f2fa1add7a9f09bef238cdfad8461f5239cc4
-    apt install ./keyring.deb
-    echo "deb http://debian.sur5r.net/i3/ $(grep '^DISTRIB_CODENAME=' /etc/lsb-release | cut -f2 -d=) universe" | tee /etc/apt/sources.list.d/sur5r-i3.list
-    ## adding papirus repo
-		add-apt-repository -y ppa:papirus/papirus && apt update && _waiting
-    ## adding diodon repo
-    add-apt-repository -y ppa:diodon-team/stable && apt update
+        ## adding official i3 repo
+        /usr/lib/apt/apt-helper download-file https://debian.sur5r.net/i3/pool/main/s/sur5r-keyring/sur5r-keyring_2023.02.18_all.deb keyring.deb SHA256:a511ac5f10cd811f8a4ca44d665f2fa1add7a9f09bef238cdfad8461f5239cc4
+        
+        apt install ./keyring.deb
+        
+        echo "deb http://debian.sur5r.net/i3/ $(grep '^DISTRIB_CODENAME=' /etc/lsb-release | cut -f2 -d=) universe" | tee /etc/apt/sources.list.d/sur5r-i3.list
+        
+        ## adding papirus repo
+        add-apt-repository -y ppa:papirus/papirus && apt update && _waiting
+        
+        ## adding diodon repo
+        add-apt-repository -y ppa:diodon-team/stable && apt update
 
-    _printMsg "repos added"
+        _printMsg "repos added"
 	}
 
 ## installing zsh
 function install_ZSH()
 	{
-    _printMsg "installing ZSH..."
+        _printMsg "installing ZSH..."
 
 		apt update && apt install -y zsh && _waiting
 		chsh -s /bin/zsh $USER
@@ -68,169 +72,171 @@ function install_ZSH()
 		su -c "/tmp/zsh_install.sh --unattended" - $USER
 		rm /tmp/zsh_install.sh
 
-    rsync -av --progress --chown=$USER:$USER ./zsh_themes/* /home/$USER/.oh-my-zsh/custom/themes
+        rsync -av --progress --chown=$USER:$USER ./zsh_themes/* /home/$USER/.oh-my-zsh/custom/themes
 
-    sed -i 's/ZSH_THEME="font"/ZSH_THEME="myagnoster"/' /home/$USER/.zshrc
-    echo -e "source $HOME/.aliases" >> /home/$USER/.zshrc
-    if [[ -f /home/$USER/.aliases ]]; then
-      cat ./.aliases >> /home/$USER/.aliases
-    else
-      rsync -av --progress --chown=$USER:$USER ./.aliases /home/$USER/.aliases
-    fi
+        sed -i 's/ZSH_THEME="font"/ZSH_THEME="myagnoster"/' /home/$USER/.zshrc
 
-    _printMsg "ZSH installed"
+        echo -e "source $HOME/.aliases" >> /home/$USER/.zshrc
+        echo -e "$HOME/.local/bin/ufetch" >> /home/$USER/.zshrc
+       
+        if [[ -f /home/$USER/.aliases ]]; then
+            cat ./.aliases >> /home/$USER/.aliases
+        else
+            rsync -av --progress --chown=$USER:$USER ./.aliases /home/$USER/.aliases
+        fi
+
+        _printMsg "ZSH installed"
 	}
 
 ## install bash
 function install_BASH()
-  {
-    _printMsg "installing BASH..."
+    {
+        _printMsg "installing BASH..."
 
-		chsh -s /bin/bash $USER
-		wget -O /tmp/bash_install.sh https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh
-		chmod +x /tmp/bash_install.sh
-		su -c "/tmp/bash_install.sh --unattended" - $USER
-		rm /tmp/bash_install.sh
+        chsh -s /bin/bash $USER
+        wget -O /tmp/bash_install.sh https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh
+        chmod +x /tmp/bash_install.sh
+        su -c "/tmp/bash_install.sh --unattended" - $USER
+        rm /tmp/bash_install.sh
 
-    rsync -av --progress --chown=$USER:$USER ./bash_themes/* /home/$USER/.oh-my-bash/custom/themes/
+        rsync -av --progress --chown=$USER:$USER ./bash_themes/* /home/$USER/.oh-my-bash/custom/themes/
 
-    sed -i 's/OSH_THEME="font"/OSH_THEME="myagnoster"/' /home/$USER/.bashrc
-    echo -e "ufetch" >> /home/$USER/.bashrc
+        sed -i 's/OSH_THEME="font"/OSH_THEME="myagnoster"/' /home/$USER/.bashrc
+        echo -e "$HOME/.local/bin/ufetch" >> /home/$USER/.bashrc
 
-    if [[ -f /home/$USER/.bash_aliases ]]; then
-      cat ./.bash_aliases >> /home/$USER/.bash_aliases
-    else
-      rsync -av --progress --chown=$USER:$USER ./.bash_aliases /home/$USER/.bash_aliases
-    fi
+        if [[ -f /home/$USER/.bash_aliases ]]; then
+            cat ./.bash_aliases >> /home/$USER/.bash_aliases
+        else
+            rsync -av --progress --chown=$USER:$USER ./.bash_aliases /home/$USER/.bash_aliases
+        fi
 
-    _printMsg "BASH installed"
-  }
+        _printMsg "BASH installed"
+    }
 
 ## installing required packages
 function install_packs( )
 	{
 		## installing essentials
-    _printMsg "installing essential tools"
+        _printMsg "installing essential tools"
 
 		apt update && apt install -y make git jq curl wget ffmpeg terminator pavucontrol mlocate && _waiting
     
-    _printMsg "essentials installed"
+        _printMsg "essentials installed"
 
 		#install i3 & plugins
-    _printMsg "installing i3wm environment"
+        _printMsg "installing i3wm environment"
 
 		apt update && apt install -y i3 i3blocks i3lock i3lock-fancy dunst suckless-tools rofi && _waiting
 
-    _printMsg "i3 installed"
+        _printMsg "i3 installed"
 
 		#install features
-    _printMsg "installing extra tools"
+        _printMsg "installing extra tools"
 
 		apt update && apt install -y feh fonts-font-awesome fonts-jetbrains-mono papirus-folders papirus-icon-theme oxygen-cursor-theme oxygen-cursor-theme-extra nemo bluez bluez-tools blueman yad playerctl pulseaudio-utils xautolock redshift diodon picom xdotool
     
-    _printMsg "extras installed"
+        _printMsg "extras installed"
 	}
 
 
 ## copuing themes
-function themes()
+function install_themes()
 	{
-    _printMsg "installing themes"
+        _printMsg "installing themes"
 
 		rsync -av --progress themes/* /usr/share/themes/ && _waiting
     
-    _printMsg "themes installed"
+        _printMsg "themes installed"
 	}
 
 
 ## setuping icons
-function icon()
+function install_icons()
 	{
-    _printMsg "installing icons"
-	
-  	papirus-folders -C adwaita --theme Papirus-Dark && _waiting
-  
-    _printMsg "icons installed"
+        _printMsg "installing icons"
+        
+        papirus-folders -C adwaita --theme Papirus-Dark && _waiting
+    
+        _printMsg "icons installed"
 	}
 
 	
 ## setuping cursor
-function cursor()
+function install_cursors()
 	{
-    _printMsg "installing cursors"
+        _printMsg "installing cursors"
 
 		update-alternatives --set x-cursor-theme /etc/X11/cursors/oxy-terra.theme && _waiting
-    ## add gnome changes
+        ## add gnome changes
 
-    _printMsg "cursors installed"
+        _printMsg "cursors installed"
 	}
 
 
 ## copying fonts
-function fonts()
+function install_fonts()
 	{
-    _printMsg "installing fonts"
+        _printMsg "installing fonts"
 
 		mkdir -p /home/$USER/.local/share/fonts/customFonts
-		rsync -av --progress --chown=$USER:$USER ./fonts/Montserrat /home/$USER/.local/share/fonts/customFonts/ && _waiting
+		rsync -av --progress --chown=$USER:$USER ./fonts/Montserrat ./fonts/SourceCodePro /home/$USER/.local/share/fonts/customFonts/ && _waiting
 		fc-cache -f -v && _waiting
     
-    _printMsg "fonts installed"
+        _printMsg "fonts installed"
 	}
 
 
 ## copying configuration files and them correleted settings
 function copy_conf()
 	{
-    _printMsg "copying configs"
+        _printMsg "copying configs"
 
 		rsync -av --progress --chown=$USER:$USER .config/* /home/$USER/.config/ && _waiting
-    chmod -R 755 /home/$USER/.config/i3/startup 
-    chmod -R 755 /home/$USER/.config/i3/scripts/*
+        chmod -R 755 /home/$USER/.config/i3/startup 
+        chmod -R 755 /home/$USER/.config/i3/scripts/*
     
-    _printMsg "configs copied"
+        _printMsg "configs copied"
 	}
 
 
 ## installing2 extra tools
-function extras()
+function install_extras()
 	{
-    _printMsg "installing extra components"
-		
-    #creation dir for locally bin files 
-    local LOCALBIN_PATH=/home/$USER/.local/bin
-    local GLOBBIN_PATH=/usr/bin
-    
-    if [[ -d $LOCALBIN_PATH ]]; then
-      ## folder already exists
-      rsync -av --progress --chown=$USER:$USER --chmod=D2755,F755 ./.local/bin/* $LOCALBIN_PATH/ 
-    else
-      ## folder not exists
-      rsync -av --progress --chown=$USER:$USER --chmod=D2755,F755 ./.local/bin /home/$USER/.local
-    fi
+        _printMsg "installing extra components"
+            
+        #creation dir for locally bin files 
+        local LOCALBIN_PATH=/home/$USER/.local/bin
+        local GLOBBIN_PATH=/usr/bin
+        
+        if [[ -d $LOCALBIN_PATH ]]; then
+            ## folder already exists
+            rsync -av --progress --chown=$USER:$USER --chmod=D2755,F755 ./.local/bin/* $LOCALBIN_PATH/ 
+        else
+            ## folder not exists
+            rsync -av --progress --chown=$USER:$USER --chmod=D2755,F755 ./.local/bin /home/$USER/.local
+        fi
 
-	  rsync -av --progress ./extras/20-intel.conf /etc/X11/xorg.conf.d/
-	  rsync -av --progress ./extras/30-mouse.conf /etc/X11/xorg.conf.d/
-    rsync -av --prgress ./extras/Car.jpg /usr/share/backgrounds/gnome/
-    
+        rsync -av --progress ./extras/20-intel.conf /etc/X11/xorg.conf.d/
+        rsync -av --progress ./extras/30-mouse.conf /etc/X11/xorg.conf.d/
+        rsync -av --prgress ./extras/Car.jpg /usr/share/backgrounds/gnome/
+        
 
-		# install micro editore
-		curl https://getmic.ro | bash && _waiting
-		mv micro /usr/bin/
+            # install micro editore
+        curl https://getmic.ro | bash && _waiting
+        mv micro /usr/bin/
 
-    _printMsg "components added"
+        _printMsg "components added"
 	}
 
 
-function apps()
-  {
-    read -p "Do you want to install the other applications? [yes/NO] " vapp
+function install_apps()
+    {
+        read -p "Do you want to install the other applications? [yes/NO] " vapp
 
-    if [[ ${vapp} == "y" || ${vapp} == "yes" ]]; then
-      ./apps_install $USER
-    fi
-
-  }
+        if [[ ${vapp} == "y" || ${vapp} == "yes" ]]; then
+            ./apps_install $USER
+        fi
+    }
 
 ## help message
 function help()
@@ -281,27 +287,27 @@ d::::::ddddd::::::ddo:::::ooooo:::::o  n::::n    n::::ne::::::::e
 ##################
 
 function main()
-  {
-    apt update
-		add_repos
-		install_packs
-    
-    _chooseSH
-    if [[ $SHCHOSEN -eq 1 ]]; then
-      install_BASH
-    elif [[ $SHCHOSEN -eq 2 ]]; then
-      install_ZSH
-    fi
-		
-		copy_conf
-		themes
-		icon
-		cursor
-    fonts
-		extras
-    apps
-		finish
-  }
+    {
+        apt update
+        add_repos
+        install_packs
+        
+        _chooseSH
+        if [[ $SHCHOSEN -eq 1 ]]; then
+            install_BASH
+        elif [[ $SHCHOSEN -eq 2 ]]; then
+            install_ZSH
+        fi
+            
+        copy_conf
+        install_themes
+        install_icons
+        install_cursors
+        install_fonts
+        install_extras
+        install_apps
+        finish
+    }
 
 if [[ "$EUID" = 0 && $# -eq 1 ]]; then
 	if [[ $1 == "-h" ]]; then
