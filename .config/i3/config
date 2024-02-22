@@ -68,13 +68,13 @@ bindsym $super+Return exec /usr/bin/x-terminal-emulator
 bindsym $super+b exec gtk-launch $(xdg-settings get default-web-browser)
 
 # rofi app select
-bindsym $super+space exec rofi -modi drun -show drun -config ~/.config/rofi/rofidmenu.rasi
+bindsym $super+space exec rofi -modi drun -show drun -config $HOME/.config/rofi/rofidmenu.rasi
 
 # rofi command run
-bindsym $super+Shift+space exec rofi -show run -config ~/.config/rofi/rofidmenu.rasi
+bindsym $super+Shift+space exec rofi -show run -config $HOME/.config/rofi/rofidmenu.rasi
 
 # window list 
-bindsym $super+w exec rofi -show window -config ~/.config/rofi/rofidmenu.rasi
+bindsym $super+w exec rofi -show window -config $HOME/.config/rofi/rofidmenu.rasi
 
 # focus parent container
 bindsym $super+a focus parent
@@ -215,7 +215,7 @@ bindsym $super+Shift+r reload
 bindsym $super+Ctrl+r restart
 
 # power menu
-bindsym $super+Shift+p exec --no-startup-id ~/.config/i3/scripts/ui/powermenu
+bindsym $super+Shift+p exec --no-startup-id $HOME/.config/i3/scripts/ui/powermenu
 
 # lock screen
 bindsym $super+Escape exec i3lock-fancy
@@ -239,13 +239,16 @@ bindsym $super+Shift+Ctrl+n exec --no-startup-id dunstctl close-all
 bindsym $super+i bar mode toggle
 
 # screen(s) screenshot
-bindsym --release Print exec gnome-screenshot
+#bindsym --release Print exec gnome-screenshot
+bindsym Print exec flameshot gui -c -p $HOME/Pictures/Screenshots/
 
 # area screenshot
-bindsym --release Shift+Print exec gnome-screenshot -a
+#bindsym --release Shift+Print exec gnome-screenshot -a
+bindsym Shift+Print exec flameshot screen
 
 # window screenshot
-bindsym --release Ctrl+Print exec gnome-screenshot -w
+#bindsym --release Ctrl+Print exec gnome-screenshot -w
+bindsym Ctrl+Print exec flameshot full
 
 # volume keybinding
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle # mute
@@ -258,16 +261,18 @@ bindsym XF86AudioPlay exec --no-startup-id playerctl play-pause # toggle play-pa
 bindsym XF86AudioPause exec --no-startup-id playerctl play-pause # toggle play-pause
 bindsym XF86AudioNext exec --no-startup-id playerctl next # forward song
 bindsym XF86AudioPrev exec --no-startup-id playerctl previous # backward song
-bindsym XF86MonBrightnessDown  exec --no-startup-id ~/.config/i3/scripts/bar/redlight2 down # brighness down
-bindsym XF86MonBrightnessUp  exec --no-startup-id ~/.config/i3/scripts/bar/redlight2 up # brightness up
+bindsym XF86MonBrightnessDown  exec --no-startup-id $HOME/.config/i3/scripts/bar/redlight2 down # brighness down
+bindsym XF86MonBrightnessUp  exec --no-startup-id $HOME/.config/i3/scripts/bar/redlight2 up # brightness up
 
 # extra shortcut
-bindsym $super+Shift+b exec ~/.config/i3/scripts/ui/browser_selector
-bindsym $super+$alt+l exec ~/.config/i3/scripts/ui/rofiLooks
+bindsym $super+Shift+b exec $HOME/.config/i3/scripts/ui/browser_selector
+bindsym $super+$alt+l exec $HOME/.config/i3/scripts/ui/rofiLooks
 bindsym $super+Shift+Return exec /usr/bin/code
-bindsym $super+Shift+l exec ~/.config/i3/scripts/ui/openlayout_shortcut
-bindsym $super+Shift+m exec ~/.local/bin/espace
+bindsym $super+Shift+l exec $HOME/.config/i3/scripts/ui/openlayout_shortcut
+bindsym $super+Shift+m exec $HOME/.local/bin/espace
 bindsym $super+Shift+v exec /usr/bin/diodon
+bindsym $super+Shift+g exec $HOME/Applications/smartgit/bin/smartgit.sh
+bindsym $super+ctrl+$alt+space exec $HOME/.config/i3/scripts/ui/changeKeyboardLayout
 
 # resize
 mode "Resize Mode" 
@@ -339,7 +344,7 @@ popup_during_fullscreen smart
 focus_follows_mouse no
 
 #set theme
-include $HOME/.config/i3/themes/dark_yellow.conf
+include $HOME/.config/i3/themes/dark_blue.conf
 
 ###############################
 # External programs to launch #
@@ -349,7 +354,7 @@ include $HOME/.config/i3/themes/dark_yellow.conf
 exec --no-startup-id dunst --config $HOME/.config/dunst/dunstrc
 
 # Hide the mouse pointer if unused for a duration
-exec --no-startup-id $HOME/.local/bin/unclutter -b
+exec --no-startup-id /usr/bin/unclutter -b
 
 # Load nm-applet to provide auth dialogs for network access
 exec --no-startup-id /usr/bin/nm-applet
@@ -358,10 +363,10 @@ exec --no-startup-id /usr/bin/nm-applet
 exec --no-startup-id /usr/bin/blueman-applet
 
 # load picom
-# exec --no-startup-id /usr/bin/picom --config ~/.config/picom/config
+# exec --no-startup-id /usr/bin/picom --config $HOME/.config/picom/config
 
 # set lockscreen & screensaver
-# exec "xautolock -detectsleep -time 5 -locker \"~/.config/i3/scripts/ui/lock\"" #lock
+# exec "xautolock -detectsleep -time 5 -locker \"$HOME/.config/i3/scripts/ui/lock\"" #lock
 exec "xset s 300; xset s blank" #screensaver
 
 ## startup applications

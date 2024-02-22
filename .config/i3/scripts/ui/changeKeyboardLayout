@@ -1,0 +1,23 @@
+#!/bin/bash
+
+currentlayout=$(setxkbmap -query | grep layout | awk {'print $2'})
+
+layouts=$(localectl list-x11-keymap-layouts | sort)
+
+arraylayouts=($layouts)
+#echo "${arraylayouts[@]}"
+#echo $layouts
+for i in "${!arraylayouts[@]}"; do
+	if [[ "${arraylayouts[i]}" == "$currentlayout" ]]; then
+		unset arraylayouts[i]
+		arraylayouts=("(*)$currentlayout" "${arraylayouts[@]}")
+		break
+	fi
+done
+		
+
+in=$(printf '%s\n' "${arraylayouts[@]}" | rofi -dmenu -p "i3 Layouts" -config ~/.config/rofi/rofidmenu.rasi)
+
+if [[ $in ]]; then
+  setxkbmap -layout $in
+fi
